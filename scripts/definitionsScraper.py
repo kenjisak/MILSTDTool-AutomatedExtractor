@@ -26,19 +26,22 @@ def filterWorksheets(allWorksheets):
     
     return filteredWorksheets
 
-# get the instance of the Spreadsheet
-sheet = client.open('Copy of MIL-STD-1472H (10)')
-allWorksheets = sheet.worksheets() # get all worksheets
+# access to google sheets docs
+milSTDFile = client.open('Copy of MIL-STD-1472H (10)')
+allWorkMilSTDsheets = milSTDFile.worksheets() # get all worksheets
 
-filterWorksheets(allWorksheets)
+cleanDataFile = client.open('Copy of MilSTD1472HS5CleanData')
+cleanDataSheet = cleanDataFile.get_worksheet(0) # get Clean Data worksheet
 
 
-worksheet = sheet.get_worksheet(70)
-# worksheet.update_cell(1, 1, "I just wrote to a spreadsheet using Python!")
+# filterWorksheets(allWorkMilSTDsheets)
 
-for i in range(1,worksheet.row_count):
-    #add catch rate limit error here to sleep for 10 seconds and try again
-    currRowText = worksheet.cell(col=1,row=i).value # get the value at the specific cell
+milSTDSheet = milSTDFile.get_worksheet(51)
+for i in range(1,milSTDSheet.row_count):
+    #TODO add catch rate limit error here to sleep for 10 seconds and try again
+    #TODO add highlight for the row that has been processed in MILSTD sheet and placed in CleanData sheet
+
+    currRowText = milSTDSheet.cell(col=1,row=i).value # get the value at the specific cell
     
     if currRowText == None:
         emptyCount += 1
@@ -53,11 +56,20 @@ for i in range(1,worksheet.row_count):
 
         # Extract and print the parts for each match
         for match in matches:
-            part1, part2, part3 = match
-            print(f"Part 1: '{part1}'")
-            print(f"Part 2: '{part2}'")
-            print(f"Part 3: '{part3.strip()}'\n")
+            section, term, description = match
+            print(f"Section: '{section}'")
+            print(f"Term: '{term}'")
+            print(f"Description: '{description.strip()}'\n")
+            print("=====================================")
 
+            nextAvailRow = len(cleanDataSheet.get_all_values()) + 1
+
+            cleanDataSheet.update_cell(nextAvailRow, 1, section)
+            cleanDataSheet.update_cell(nextAvailRow, 2, term)
+            cleanDataSheet.update_cell(nextAvailRow, 3, description.strip())
+        print("next row")
+    
 
     if emptyCount == 5: # if the row is empty for 5 times, then go to next Table
         break
+milSTDSheet.update_tab_color('#000000') # change the tab color to black after the worksheet has been cleaned up
