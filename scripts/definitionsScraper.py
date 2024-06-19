@@ -1,6 +1,8 @@
 import re
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+from gspread_formatting import *
+from gspread.utils import rowcol_to_a1
 
 scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive.file','https://www.googleapis.com/auth/drive']
 
@@ -34,15 +36,25 @@ cleanDataFile = client.open('Copy of MilSTD1472HS5CleanData')
 cleanDataSheet = cleanDataFile.get_worksheet(0) # get Clean Data worksheet
 
 
-# filterWorksheets(allWorkMilSTDsheets)
+# nonProcessedSheets = filterWorksheets(allWorkMilSTDsheets) #use this to loop through all sheets in the whole document
+# for currMilSTDSheet in nonProcessedSheets:
 
-milSTDSheet = milSTDFile.get_worksheet(51)
-for i in range(1,milSTDSheet.row_count):
+
+currMilSTDSheet = milSTDFile.get_worksheet(51) #TODO only processing 1 specific sheet in the document for testing, remove for full iteration later
+readReqCount = 0;
+writeReqCount = 0;
+
+for i in range(1,currMilSTDSheet.row_count):
     #TODO add catch rate limit error here to sleep for 10 seconds and try again
-    #TODO add highlight for the row that has been processed in MILSTD sheet and placed in CleanData sheet
 
-    currRowText = milSTDSheet.cell(col=1,row=i).value # get the value at the specific cell
-    
+    currCell = currMilSTDSheet.cell(col=1,row=i)
+    try:
+        currRowText = currCell.value # get the value at the specific cell
+    except Exception as e:
+        print(f"A read error limitation occurred: {str(e)}")
+
+    readReqCount += 1 # update iterations of read reqs for usage limitations wait time calculations
+
     if currRowText == None:
         emptyCount += 1
     else: # row has text
@@ -64,12 +76,31 @@ for i in range(1,milSTDSheet.row_count):
 
             nextAvailRow = len(cleanDataSheet.get_all_values()) + 1
 
-            cleanDataSheet.update_cell(nextAvailRow, 1, section)
-            cleanDataSheet.update_cell(nextAvailRow, 2, term)
-            cleanDataSheet.update_cell(nextAvailRow, 3, description.strip())
-        print("next row")
-    
+            try:
+                cleanDataSheet.update_cell(nextAvailRow, 1, section)
+            except Exception as e:
+                print(f"A section write error limitation occurred: {str(e)}")
 
-    if emptyCount == 5: # if the row is empty for 5 times, then go to next Table
+            try:
+                cleanDataSheet.update_cell(nextAvailRow, 2, term)
+            except Exception as e:
+                print(f"A term write error limitation occurred: {str(e)}")
+
+            try:
+                cleanDataSheet.update_cell(nextAvailRow, 3, description.strip())
+            except Exception as e:
+                print(f"A description write error limitation occurred: {str(e)}")
+
+            #TODO add catch of limit usage write requests and retrying after sleeping using "min(((2^n)+random_number_milliseconds), maximum_backoff)" where n = read or write req count, maximum_backoff = 64.
+            writeReqCount += 3 #TODO possibly remove the equation for sleep and just set back off time to hardcode 10s before retrying
+            
+            currCella1Notation = rowcol_to_a1(i,1);
+            format = CellFormat(
+                backgroundColor=Color(1,1,0) #RGB values for yellow highlight
+            )
+            format_cell_range(currMilSTDSheet,currCella1Notation,format)
+        # print("next row")
+
+    if emptyCount == 5: # if the row is empty for 5 times, then go to next Table/Sheet
         break
-milSTDSheet.update_tab_color('#000000') # change the tab color to black after the worksheet has been cleaned up
+currMilSTDSheet.update_tab_color('#000000') # change the tab color to black after the worksheet has been cleaned up
