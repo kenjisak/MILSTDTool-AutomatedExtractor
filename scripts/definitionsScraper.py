@@ -52,14 +52,27 @@ cleanDataSheet = cleanDataFile.get_worksheet(0) # get Clean Data worksheet
 # nonProcessedSheets = filterWorksheets(allWorkMilSTDsheets) #use this to loop through all sheets in the whole document
 # for currMilSTDSheet in nonProcessedSheets:
 
-
-currMilSTDSheet = milSTDFile.get_worksheet(51) #TODO only processing 1 specific sheet in the document for testing, remove for full iteration later
+request_attempt = 0
+while True:
+    try:
+        currMilSTDSheet = milSTDFile.get_worksheet(51) #TODO only processing 1 specific sheet in the document for testing, remove for full iteration later
+        break
+    except Exception as e:
+        print(f"A read error limitation occurred: {str(e)}")
+        request_attempt += 1
+        exponential_backoff(request_attempt)
 
 for i in range(1,currMilSTDSheet.row_count):
-    #TODO add catch rate limit error here to sleep for 10 seconds and try again
+    request_attempt = 0
+    while True:
+        try:
+            currCell = currMilSTDSheet.cell(row=i,col=1)
+            break
+        except Exception as e:
+            print(f"A read error limitation occurred: {str(e)}")
+            request_attempt += 1
+            exponential_backoff(request_attempt)
 
-    currCell = currMilSTDSheet.cell(col=1,row=i)
-    
     request_attempt = 0
     while True:
         try:
@@ -69,6 +82,17 @@ for i in range(1,currMilSTDSheet.row_count):
             print(f"A read error limitation occurred: {str(e)}")
             request_attempt += 1
             exponential_backoff(request_attempt)
+    
+    request_attempt = 0
+    while True:
+        try:
+            currCell_format = get_effective_format(currMilSTDSheet, rowcol_to_a1(i,1)) # row = i, col = 1
+            break
+        except Exception as e:
+            print(f"A read error limitation occurred: {str(e)}")
+            request_attempt += 1
+            exponential_backoff(request_attempt)
+        
     if currCell_format: # if format exists, convert to proper object type for highlight comparison
         currCell_format_highlight = CellFormat(
         backgroundColor=Color(currCell_format.backgroundColor.red, currCell_format.backgroundColor.green, currCell_format.backgroundColor.blue)
@@ -96,7 +120,15 @@ for i in range(1,currMilSTDSheet.row_count):
             print(f"Description: '{description.strip()}'\n")
             print("=====================================")
 
-            nextAvailRow = len(cleanDataSheet.get_all_values()) + 1
+            request_attempt = 0
+            while True:
+                try:
+                    nextAvailRow = len(cleanDataSheet.get_all_values()) + 1
+                    break
+                except Exception as e:
+                    print(f"A read error limitation occurred: {str(e)}")
+                    request_attempt += 1
+                    exponential_backoff(request_attempt)
             
             request_attempt = 0
             while True:
@@ -127,7 +159,16 @@ for i in range(1,currMilSTDSheet.row_count):
                     print(f"A description write error limitation occurred: {str(e)}")
                     request_attempt += 1
                     exponential_backoff(request_attempt)
-            format_cell_range(currMilSTDSheet,currCella1Notation,format)
+
+            request_attempt = 0
+            while True:
+                try:
+                    format_cell_range(currMilSTDSheet, rowcol_to_a1(i,1), yellow_highlight)
+                    break
+                except Exception as e:
+                    print(f"A description write error limitation occurred: {str(e)}")
+                    request_attempt += 1
+                    exponential_backoff(request_attempt)
         # print("next row")
 
     if emptyCount == 5: # if the row is empty for 5 times, then go to next Table/Sheet
