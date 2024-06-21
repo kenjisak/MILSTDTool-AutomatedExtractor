@@ -36,6 +36,11 @@ def filterWorksheets(allWorksheets):
     
     return filteredWorksheets
 
+
+yellow_highlight = CellFormat( #definition for yellow highlight
+    backgroundColor=Color(1,1,0) #RGB values for yellow highlight
+)
+
 # access to google sheets docs
 milSTDFile = client.open('Copy of MIL-STD-1472H (10)')
 allWorkMilSTDsheets = milSTDFile.worksheets() # get all worksheets
@@ -64,11 +69,17 @@ for i in range(1,currMilSTDSheet.row_count):
             print(f"A read error limitation occurred: {str(e)}")
             request_attempt += 1
             exponential_backoff(request_attempt)
+    if currCell_format: # if format exists, convert to proper object type for highlight comparison
+        currCell_format_highlight = CellFormat(
+        backgroundColor=Color(currCell_format.backgroundColor.red, currCell_format.backgroundColor.green, currCell_format.backgroundColor.blue)
+    )
+
 
     if currRowText == None:
         emptyCount += 1
-    # elif currCell # add highlight checking to skip over processed cells
-    else: # row has text
+    elif currCell_format_highlight == yellow_highlight: #has text with highlight checking to skip over processed cells
+        continue
+    else: # row has text and has not been processed
         emptyCount = 0 # reset the emptyCount
 
         # Regular expression to match each entry
@@ -116,11 +127,6 @@ for i in range(1,currMilSTDSheet.row_count):
                     print(f"A description write error limitation occurred: {str(e)}")
                     request_attempt += 1
                     exponential_backoff(request_attempt)
-                    
-            currCella1Notation = rowcol_to_a1(i,1);
-            format = CellFormat(
-                backgroundColor=Color(1,1,0) #RGB values for yellow highlight
-            )
             format_cell_range(currMilSTDSheet,currCella1Notation,format)
         # print("next row")
 
