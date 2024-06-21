@@ -1,4 +1,6 @@
+import random
 import re
+import time
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from gspread_formatting import *
@@ -11,7 +13,13 @@ scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/aut
 creds = ServiceAccountCredentials.from_json_keyfile_name("excelscraper-11d9cd7fa778.json", scope)
 client = gspread.authorize(creds)
 
-
+# Function to perform exponential backoff
+def exponential_backoff(attempt):
+    maximum_backoff_time = 64;
+    backoff_time = min(((2 ** attempt) + random.random()), maximum_backoff_time)  # Calculate backoff time with a maximum time in seconds set
+    print(f"Retrying in {backoff_time} seconds...")
+    time.sleep(backoff_time)
+    
 def filterWorksheets(allWorksheets):
     filteredWorksheets = []
 
