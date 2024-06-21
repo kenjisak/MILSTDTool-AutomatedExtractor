@@ -49,22 +49,25 @@ cleanDataSheet = cleanDataFile.get_worksheet(0) # get Clean Data worksheet
 
 
 currMilSTDSheet = milSTDFile.get_worksheet(51) #TODO only processing 1 specific sheet in the document for testing, remove for full iteration later
-readReqCount = 0;
-writeReqCount = 0;
 
 for i in range(1,currMilSTDSheet.row_count):
     #TODO add catch rate limit error here to sleep for 10 seconds and try again
 
     currCell = currMilSTDSheet.cell(col=1,row=i)
-    try:
-        currRowText = currCell.value # get the value at the specific cell
-    except Exception as e:
-        print(f"A read error limitation occurred: {str(e)}")
-
-    readReqCount += 1 # update iterations of read reqs for usage limitations wait time calculations
+    
+    request_attempt = 0
+    while True:
+        try:
+            currRowText = currCell.value # get the value at the specific cell
+            break
+        except Exception as e:
+            print(f"A read error limitation occurred: {str(e)}")
+            request_attempt += 1
+            exponential_backoff(request_attempt)
 
     if currRowText == None:
         emptyCount += 1
+    # elif currCell # add highlight checking to skip over processed cells
     else: # row has text
         emptyCount = 0 # reset the emptyCount
 
@@ -83,25 +86,37 @@ for i in range(1,currMilSTDSheet.row_count):
             print("=====================================")
 
             nextAvailRow = len(cleanDataSheet.get_all_values()) + 1
-
-            try:
-                cleanDataSheet.update_cell(nextAvailRow, 1, section)
-            except Exception as e:
-                print(f"A section write error limitation occurred: {str(e)}")
-
-            try:
-                cleanDataSheet.update_cell(nextAvailRow, 2, term)
-            except Exception as e:
-                print(f"A term write error limitation occurred: {str(e)}")
-
-            try:
-                cleanDataSheet.update_cell(nextAvailRow, 3, description.strip())
-            except Exception as e:
-                print(f"A description write error limitation occurred: {str(e)}")
-
-            #TODO add catch of limit usage write requests and retrying after sleeping using "min(((2^n)+random_number_milliseconds), maximum_backoff)" where n = read or write req count, maximum_backoff = 64.
-            writeReqCount += 3 #TODO possibly remove the equation for sleep and just set back off time to hardcode 10s before retrying
             
+            request_attempt = 0
+            while True:
+                try:
+                    cleanDataSheet.update_cell(nextAvailRow, 1, section)
+                    break
+                except Exception as e:
+                    print(f"A section write error limitation occurred: {str(e)}")
+                    request_attempt += 1
+                    exponential_backoff(request_attempt)
+
+            request_attempt = 0
+            while True:
+                try:
+                    cleanDataSheet.update_cell(nextAvailRow, 2, term)
+                    break
+                except Exception as e:
+                    print(f"A term write error limitation occurred: {str(e)}")
+                    request_attempt += 1
+                    exponential_backoff(request_attempt)
+
+            request_attempt = 0
+            while True:
+                try:
+                    cleanDataSheet.update_cell(nextAvailRow, 3, description.strip())
+                    break
+                except Exception as e:
+                    print(f"A description write error limitation occurred: {str(e)}")
+                    request_attempt += 1
+                    exponential_backoff(request_attempt)
+                    
             currCella1Notation = rowcol_to_a1(i,1);
             format = CellFormat(
                 backgroundColor=Color(1,1,0) #RGB values for yellow highlight
