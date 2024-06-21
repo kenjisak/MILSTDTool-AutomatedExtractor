@@ -22,7 +22,7 @@ def exponential_backoff(attempt):
     
 def filterWorksheets(allWorksheets):
     filteredWorksheets = []
-
+    start_sheet_index = 50
     for worksheet in allWorksheets: # filter out the worksheets that have not been cleaned up *start from Table 51, unsure why some under Table 51 are not changed to black
         #print(worksheet.title, worksheet.get_tab_color())
         
@@ -31,7 +31,7 @@ def filterWorksheets(allWorksheets):
             match = re.compile(r'\d+').search(title)# Search for the pattern in the text
             tableNumber = int(match.group())
 
-            if tableNumber > 50:
+            if tableNumber > start_sheet_index:
                 filteredWorksheets.append(worksheet)
     
     return filteredWorksheets
