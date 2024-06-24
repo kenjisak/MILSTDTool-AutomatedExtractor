@@ -49,128 +49,128 @@ cleanDataFile = client.open('Copy of MilSTD1472HS5CleanData')
 cleanDataSheet = cleanDataFile.get_worksheet(0) # get Clean Data worksheet
 
 
-# nonProcessedSheets = filterWorksheets(allWorkMilSTDsheets) #use this to loop through all sheets in the whole document
-# for currMilSTDSheet in nonProcessedSheets:
-
-request_attempt = 0
-while True:
-    try:
-        currMilSTDSheet = milSTDFile.get_worksheet(51) #TODO only processing 1 specific sheet in the document for testing, remove for full iteration later
-        break
-    except Exception as e:
-        print(f"A read error limitation occurred: {str(e)}")
-        request_attempt += 1
-        exponential_backoff(request_attempt)
-
-for i in range(1,currMilSTDSheet.row_count):
-    request_attempt = 0
-    while True:
-        try:
-            currCell = currMilSTDSheet.cell(row=i,col=1)
-            break
-        except Exception as e:
-            print(f"A read error limitation occurred: {str(e)}")
-            request_attempt += 1
-            exponential_backoff(request_attempt)
+nonProcessedSheets = filterWorksheets(allWorkMilSTDsheets) #use this to loop through all sheets in the whole document
+for currMilSTDSheet in nonProcessedSheets:
 
     request_attempt = 0
-    while True:
-        try:
-            currRowText = currCell.value # get the value at the specific cell
-            break
-        except Exception as e:
-            print(f"A read error limitation occurred: {str(e)}")
-            request_attempt += 1
-            exponential_backoff(request_attempt)
-    
-    request_attempt = 0
-    while True:
-        try:
-            currCell_format = get_effective_format(currMilSTDSheet, rowcol_to_a1(i,1)) # row = i, col = 1
-            break
-        except Exception as e:
-            print(f"A read error limitation occurred: {str(e)}")
-            request_attempt += 1
-            exponential_backoff(request_attempt)
+    # while True:
+    #     try:
+    #         currMilSTDSheet = milSTDFile.get_worksheet(51) #TODO only processing 1 specific sheet in the document for testing, remove for full iteration later
+    #         break
+    #     except Exception as e:
+    #         print(f"A read error limitation occurred: {str(e)}")
+    #         request_attempt += 1
+    #         exponential_backoff(request_attempt)
+
+    for i in range(1,currMilSTDSheet.row_count):
+        request_attempt = 0
+        while True:
+            try:
+                currCell = currMilSTDSheet.cell(row=i,col=1)
+                break
+            except Exception as e:
+                print(f"A read error limitation occurred: {str(e)}")
+                request_attempt += 1
+                exponential_backoff(request_attempt)
+
+        request_attempt = 0
+        while True:
+            try:
+                currRowText = currCell.value # get the value at the specific cell
+                break
+            except Exception as e:
+                print(f"A read error limitation occurred: {str(e)}")
+                request_attempt += 1
+                exponential_backoff(request_attempt)
         
-    if currCell_format: # if format exists, convert to proper object type for highlight comparison
-        currCell_format_highlight = CellFormat(
-        backgroundColor=Color(currCell_format.backgroundColor.red, currCell_format.backgroundColor.green, currCell_format.backgroundColor.blue)
-    )
-
-
-    if currRowText == None:
-        emptyCount += 1
-    elif currCell_format_highlight == yellow_highlight: #has text with highlight checking to skip over processed cells
-        continue
-    else: # row has text and has not been processed
-        emptyCount = 0 # reset the emptyCount
-
-        # Regular expression to match each entry
-        pattern = re.compile(r'^\s*((?:\d+\.)+\d+)\s+([^\d\s].+?\.)\s*(.*?)(?=^\s*(?:\d+\.)+\d+\s+[^\d\s]|$)', re.DOTALL | re.MULTILINE)
-
-        # Find all matches
-        matches = pattern.findall(currRowText)
-
-        # Extract and print the parts for each match
-        for match in matches:
-            section, term, description = match
-            print(f"Section: '{section}'")
-            print(f"Term: '{term}'")
-            print(f"Description: '{description.strip()}'\n")
-            print("=====================================")
-
-            request_attempt = 0
-            while True:
-                try:
-                    nextAvailRow = len(cleanDataSheet.get_all_values()) + 1
-                    break
-                except Exception as e:
-                    print(f"A read error limitation occurred: {str(e)}")
-                    request_attempt += 1
-                    exponential_backoff(request_attempt)
+        request_attempt = 0
+        while True:
+            try:
+                currCell_format = get_effective_format(currMilSTDSheet, rowcol_to_a1(i,1)) # row = i, col = 1
+                break
+            except Exception as e:
+                print(f"A read error limitation occurred: {str(e)}")
+                request_attempt += 1
+                exponential_backoff(request_attempt)
             
-            request_attempt = 0
-            while True:
-                try:
-                    cleanDataSheet.update_cell(nextAvailRow, 1, section)
-                    break
-                except Exception as e:
-                    print(f"A section write error limitation occurred: {str(e)}")
-                    request_attempt += 1
-                    exponential_backoff(request_attempt)
+        if currCell_format: # if format exists, convert to proper object type for highlight comparison
+            currCell_format_highlight = CellFormat(
+            backgroundColor=Color(currCell_format.backgroundColor.red, currCell_format.backgroundColor.green, currCell_format.backgroundColor.blue)
+        )
 
-            request_attempt = 0
-            while True:
-                try:
-                    cleanDataSheet.update_cell(nextAvailRow, 2, term)
-                    break
-                except Exception as e:
-                    print(f"A term write error limitation occurred: {str(e)}")
-                    request_attempt += 1
-                    exponential_backoff(request_attempt)
 
-            request_attempt = 0
-            while True:
-                try:
-                    cleanDataSheet.update_cell(nextAvailRow, 3, description.strip())
-                    break
-                except Exception as e:
-                    print(f"A description write error limitation occurred: {str(e)}")
-                    request_attempt += 1
-                    exponential_backoff(request_attempt)
+        if currRowText == None:
+            emptyCount += 1
+        elif currCell_format_highlight == yellow_highlight: #has text with highlight checking to skip over processed cells
+            continue
+        else: # row has text and has not been processed
+            emptyCount = 0 # reset the emptyCount
 
-            request_attempt = 0
-            while True:
-                try:
-                    format_cell_range(currMilSTDSheet, rowcol_to_a1(i,1), yellow_highlight)
-                    break
-                except Exception as e:
-                    print(f"A description write error limitation occurred: {str(e)}")
-                    request_attempt += 1
-                    exponential_backoff(request_attempt)
-        # print("next row")
+            # Regular expression to match each entry
+            pattern = re.compile(r'^\s*((?:\d+\.)+\d+)\s+([^\d\s].+?\.)\s*(.*?)(?=^\s*(?:\d+\.)+\d+\s+[^\d\s]|$)', re.DOTALL | re.MULTILINE)
 
-    if emptyCount == 5: # if the row is empty for 5 times, then go to next Table/Sheet
-        break
-currMilSTDSheet.update_tab_color('#000000') # change the tab color to black after the worksheet has been cleaned up
+            # Find all matches
+            matches = pattern.findall(currRowText)
+
+            # Extract and print the parts for each match
+            for match in matches:
+                section, term, description = match
+                print(f"Section: '{section}'")
+                print(f"Term: '{term}'")
+                print(f"Description: '{description.strip()}'\n")
+                print("=====================================")
+
+                request_attempt = 0
+                while True:
+                    try:
+                        nextAvailRow = len(cleanDataSheet.get_all_values()) + 1
+                        break
+                    except Exception as e:
+                        print(f"A read error limitation occurred: {str(e)}")
+                        request_attempt += 1
+                        exponential_backoff(request_attempt)
+                
+                request_attempt = 0
+                while True:
+                    try:
+                        cleanDataSheet.update_cell(nextAvailRow, 1, section)
+                        break
+                    except Exception as e:
+                        print(f"A section write error limitation occurred: {str(e)}")
+                        request_attempt += 1
+                        exponential_backoff(request_attempt)
+
+                request_attempt = 0
+                while True:
+                    try:
+                        cleanDataSheet.update_cell(nextAvailRow, 2, term)
+                        break
+                    except Exception as e:
+                        print(f"A term write error limitation occurred: {str(e)}")
+                        request_attempt += 1
+                        exponential_backoff(request_attempt)
+
+                request_attempt = 0
+                while True:
+                    try:
+                        cleanDataSheet.update_cell(nextAvailRow, 3, description.strip())
+                        break
+                    except Exception as e:
+                        print(f"A description write error limitation occurred: {str(e)}")
+                        request_attempt += 1
+                        exponential_backoff(request_attempt)
+
+                request_attempt = 0
+                while True:
+                    try:
+                        format_cell_range(currMilSTDSheet, rowcol_to_a1(i,1), yellow_highlight)
+                        break
+                    except Exception as e:
+                        print(f"A description write error limitation occurred: {str(e)}")
+                        request_attempt += 1
+                        exponential_backoff(request_attempt)
+            # print("next row")
+
+        if emptyCount == 5: # if the row is empty for 5 times, then go to next Table/Sheet
+            break
+    currMilSTDSheet.update_tab_color('#000000') # change the tab color to black after the worksheet has been cleaned up
