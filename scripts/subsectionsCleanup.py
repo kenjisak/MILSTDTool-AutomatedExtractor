@@ -24,6 +24,15 @@ cleanDataSheet = cleanDataFile.get_worksheet(0) # get Clean Data worksheet
 request_attempt = 0
 indexCounter = 2
 
+while True:
+    try:
+        indexCounter = int(cleanDataSheet.cell(row=1,col=4).value)
+        break
+    except Exception as e:
+        print(f"A read error limitation occurred: {str(e)}")
+        request_attempt += 1
+        exponential_backoff(request_attempt)
+
 while indexCounter <= cleanDataSheet.row_count:
     
     # for indexCounter in range(2,cleanDataSheet.row_count):
@@ -31,7 +40,7 @@ while indexCounter <= cleanDataSheet.row_count:
     while True:
         try:
             currSectionText = cleanDataSheet.cell(row=indexCounter,col=1).value
-            print(indexCounter + ": " + currSectionText)
+            print(str(indexCounter) + ": " + currSectionText)
             break
         except Exception as e:
             print(f"A read error limitation occurred: {str(e)}")
@@ -128,6 +137,14 @@ while indexCounter <= cleanDataSheet.row_count:
                         exponential_backoff(request_attempt)
 
             indexCounter += 1 # go next iteration, if it was a subsection, need to go back into the for loop processing the same index since the next rows are shifted upwards
+            while True:
+                try:
+                    cleanDataSheet.update_cell(row = 1, col = 4,value = indexCounter)
+                    break
+                except Exception as e:
+                    print(f"A write error limitation occurred: {str(e)}")
+                    request_attempt += 1
+                    exponential_backoff(request_attempt)
 
     if emptyCount == 5: # if the row is empty for 5 times, then go to next Table/Sheet
         break
