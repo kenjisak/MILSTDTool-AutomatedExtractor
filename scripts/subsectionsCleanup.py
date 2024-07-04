@@ -22,7 +22,7 @@ cleanDataFile = client.open('Copy of MilSTD1472HS5CleanData')
 cleanDataSheet = cleanDataFile.get_worksheet(0) # get Clean Data worksheet
 
 request_attempt = 0
-indexCounter = 2
+indexCounter = 2 # start row index for term processing
 
 while True:
     try:
@@ -64,13 +64,11 @@ while indexCounter <= cleanDataSheet.row_count:
 
 
     if currSectionText == None:
-        emptyCount += 1
-        indexCounter += 1 # go next iteration, if it was a subsection, need to go back into the for loop processing the same index since the next rows are shifted upwards
+        break # rest of the sheet is empty
     elif currCell_format_highlight == yellow_highlight: #has text with highlight checking to skip over processed cells
         indexCounter += 1 # go next iteration, if it was a subsection, need to go back into the for loop processing the same index since the next rows are shifted upwards
         continue
     else: # row has text and has not been processed
-        emptyCount = 0 # reset the emptyCount
 
         # evaluate if subsection
         if not re.match(re.compile(r'^\d+(\.\d+)+\.?$'), currSectionText):
@@ -145,10 +143,3 @@ while indexCounter <= cleanDataSheet.row_count:
                     print(f"A write error limitation occurred: {str(e)}")
                     request_attempt += 1
                     exponential_backoff(request_attempt)
-
-    if emptyCount == 5: # if the row is empty for 5 times, then go to next Table/Sheet
-        break
-
-    #TODO fix iteration after processing a subsection
-    #if not, then after deletion, check the same index again
-    #use a while loop instead with a index counter for manual iteration manipulation
