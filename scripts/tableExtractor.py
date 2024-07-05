@@ -18,6 +18,9 @@ def extract_pageNumbers_from_file(txt_file_path):
             pageNumberSet.add(int(pageNumbers[-1]))
             # pageNumberList.append(int(pageNumbers[-1]))
     # return pageNumberSet, pageNumberList
+
+    # print(len(pageNumberSet))
+    # print(pageNumberList)
     return pageNumberSet
 
 
@@ -44,12 +47,9 @@ def extract_titles_from_file(file_path):
 
 
 tables_page_numbers = extract_pageNumbers_from_file(tabledata_file_path)
-# print(len(tables_page_numbers[1]))
-# print(tables_page_numbers[0])
 
 figures_page_numbers = extract_pageNumbers_from_file(figuredata_file_path)
-# print(len(figures_page_numbers[1]))
-# print(figures_page_numbers[0])
+
 page_offset = 17 # page 1 starts after page 17, page offset + extracted page = correct page number
 
 for i in range(len(tables_page_numbers)):
