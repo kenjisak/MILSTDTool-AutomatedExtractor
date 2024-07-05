@@ -21,6 +21,23 @@ def extract_pageNumbers_from_file(txt_file_path):
     return pageNumberSet
 
 
+def extract_titles_from_file(file_path):
+    extracted_lines = []
+    with open(file_path, 'r') as file:
+        for line in file:
+            # Use regex to match text before the trailing dots and digits
+            match = re.match(r'^(.*?)(\s*\.*\d*\s*)$', line)
+            if match:
+                extracted_lines.append(match.group(1).strip())
+
+    # for text in extracted_lines:
+    #     print(text)
+
+    return extracted_lines
+
+# extract_titles_from_file(figuredata_file_path)
+# extract_titles_from_file(tabledata_file_path)
+
 # TODO add figure/image extraction plus table extraction for that same page to be paired with
 # TODO add api update requests to google sheets doc after each table
 # TODO use a sheet storage for persistence in pages alreayd processed for fast processing
@@ -44,5 +61,6 @@ for i in range(len(tables_page_numbers)):
     for j in range(len(currTables)):
         # print(currTable[i].df)
         print("Page Number: " + str(tables_page_numbers[i]) + str(currTables[j].parsing_report))
-        if currTables[j].parsing_report['accuracy'] >= 97:
-            break
+        currTables[j].to_csv('asd.csv')
+        # if currTables[j].parsing_report['accuracy'] >= 97:
+        #     break
