@@ -38,19 +38,19 @@ def extract_titles_from_file(file_path):
 
     return extracted_lines
 
-# extract_titles_from_file(figuredata_file_path)
-# extract_titles_from_file(tabledata_file_path)
-
 # TODO add figure/image extraction plus table extraction for that same page to be paired with
 # TODO add api update requests to google sheets doc after each table
 # TODO use a sheet storage for persistence in pages alreayd processed for fast processing
 
 
 tables_page_numbers = extract_pageNumbers_from_file(tabledata_file_path)
-
 figures_page_numbers = extract_pageNumbers_from_file(figuredata_file_path)
 
+tables_page_titles = extract_titles_from_file(tabledata_file_path)
+figures_page_titles = extract_titles_from_file(figuredata_file_path)
+
 page_offset = 17 # page 1 starts after page 17, page offset + extracted page = correct page number
+title_index_counter = 0
 
 for i in range(len(tables_page_numbers)):
     corrected_page_number = tables_page_numbers[i] + page_offset
@@ -61,6 +61,7 @@ for i in range(len(tables_page_numbers)):
     for j in range(len(currTables)):
         # print(currTable[i].df)
         print("Page Number: " + str(tables_page_numbers[i]) + str(currTables[j].parsing_report))
-        currTables[j].to_csv('asd.csv')
+        currTables[j].to_csv("../resources/tablesCSV/" + tables_page_titles[title_index_counter] + '.csv')
+        title_index_counter += 1
         # if currTables[j].parsing_report['accuracy'] >= 97:
         #     break
