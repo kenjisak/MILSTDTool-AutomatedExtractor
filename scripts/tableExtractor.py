@@ -4,8 +4,8 @@ import camelot
 
 
 milstdpdf_file_path = '../resources/MIL-STD-1472H.pdf'
-tabledata_file_path = '../resources/tableData.txt'
-figuredata_file_path = '../resources/figureData.txt'
+tabledata_file_path = '../resources/contentsData/tableData.txt'
+figuredata_file_path = '../resources/contentsData/figureData.txt'
 
 # Function to extract integers from each line in a file
 def extract_pageNumbers_from_file(txt_file_path):
