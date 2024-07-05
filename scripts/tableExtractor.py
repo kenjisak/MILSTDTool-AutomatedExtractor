@@ -16,8 +16,12 @@ def extract_pageNumbers_from_file(txt_file_path):
             pageNumber = re.search(r'\d+', line)
             pageNumberList.add(int(pageNumber.group()))
             # print(f"Page Number in line: {pageNumber}")
+            # TODO for figures or in general, only select the last integer found in the line
     return pageNumberList
+# TODO add figure/image extraction plus table extraction for that same page to be paired with
 
+# TODO add api update requests to google sheets doc after each table
+# TODO use a sheet storage for persistence in pages alreayd processed for fast processing
 
 
 
