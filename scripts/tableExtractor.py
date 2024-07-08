@@ -53,9 +53,12 @@ def upload_csv_file(csv_file_path):
     new_sheet_name = os.path.splitext(os.path.basename(csv_file_path))[0]
 
     # Read data from the CSV file
-    with open(csv_file_path, mode='r', newline='') as file:
+    with open(csv_file_path, mode='r', newline='', encoding='utf-8') as file:
         reader = csv.reader(file)
         data = list(reader)
+
+    num_rows = len(data) #inserts a row so dont need to set the size to exact
+    num_cols = max(len(row) for row in data)
 
     # Check if the sheet already exists
     try:
@@ -63,7 +66,7 @@ def upload_csv_file(csv_file_path):
         print(f"Sheet '{new_sheet_name}' already exists.")
     except gspread.exceptions.WorksheetNotFound:
         # Create a new sheet with the name derived from the CSV file name
-        worksheet = cleanDataFile.add_worksheet(title=new_sheet_name, rows=len(data), cols=len(data[0]))
+        worksheet = cleanDataFile.add_worksheet(title=new_sheet_name, rows=num_rows, cols=num_cols)
         print(f"New sheet '{new_sheet_name}' created.")
 
     # Clear the existing content in the worksheet
@@ -73,12 +76,16 @@ def upload_csv_file(csv_file_path):
     for row_index, row in enumerate(data, start=1):
         worksheet.insert_row(row, row_index)
 
+    worksheet.resize(rows=num_rows, cols=num_cols) # resize sheet to be exact
     print(f"Data written to sheet '{new_sheet_name}' successfully.")
 
 # TODO add figure/image extraction plus table extraction for that same page to be paired with
 # TODO add api update requests to google sheets doc after each table
 # TODO use a sheet storage for persistence in pages alreayd processed for fast processing
+# TODO ***** add checking of first row for continuation of tables
+# TODO add function for retrying requests to reduce duplication
 
+# upload_csv_file("../resources/tablesCSV/" + "TABLE I. Mechanical control criteria.csv")
 
 tables_page_numbers = extract_pageNumbers_from_file(tabledata_file_path)
 figures_page_numbers = extract_pageNumbers_from_file(figuredata_file_path)
