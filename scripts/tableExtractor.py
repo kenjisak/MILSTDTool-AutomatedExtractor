@@ -6,6 +6,7 @@ import csv
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import os
+from definitionsScraper import exponential_backoff
 
 scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive.file','https://www.googleapis.com/auth/drive']
 creds = ServiceAccountCredentials.from_json_keyfile_name("excelscraper-11d9cd7fa778.json", scope)
@@ -17,6 +18,20 @@ milstdpdf_file_path = '../resources/MIL-STD-1472H.pdf'
 tabledata_file_path = '../resources/contentsData/tableData.txt'
 figuredata_file_path = '../resources/contentsData/figureData.txt'
 
+
+def usage_limit_retry(func):
+    request_attempt = 0
+
+    while True:
+        try:
+            return func()
+        except gspread.exceptions.APIError as e:
+            print(f"A usage error limitation occurred: {str(e)}")
+            request_attempt += 1
+            exponential_backoff(request_attempt)
+        except gspread.exceptions.WorksheetNotFound:
+            # Reraise this exception so it can be caught by the calling function
+            raise
 
 # Function to extract integers from each line in a file
 def extract_pageNumbers_from_file(txt_file_path):
@@ -62,21 +77,21 @@ def upload_csv_file(csv_file_path):
 
     # Check if the sheet already exists
     try:
-        worksheet = cleanDataFile.worksheet(new_sheet_name)
+        worksheet = usage_limit_retry(lambda: cleanDataFile.worksheet(new_sheet_name))
         print(f"Sheet '{new_sheet_name}' already exists.")
     except gspread.exceptions.WorksheetNotFound:
         # Create a new sheet with the name derived from the CSV file name
-        worksheet = cleanDataFile.add_worksheet(title=new_sheet_name, rows=num_rows, cols=num_cols)
+        worksheet = usage_limit_retry(lambda: cleanDataFile.add_worksheet(title=new_sheet_name, rows=num_rows, cols=num_cols))
         print(f"New sheet '{new_sheet_name}' created.")
 
     # Clear the existing content in the worksheet
-    worksheet.clear()
+    usage_limit_retry(lambda: worksheet.clear())
 
     # Write the data to the new Google Sheet
     for row_index, row in enumerate(data, start=1):
-        worksheet.insert_row(row, row_index)
+        usage_limit_retry(lambda: worksheet.insert_row(row, row_index))
 
-    worksheet.resize(rows=num_rows, cols=num_cols) # resize sheet to be exact
+    usage_limit_retry(lambda: worksheet.resize(rows=num_rows, cols=num_cols)) # resize sheet to be exact
     print(f"Data written to sheet '{new_sheet_name}' successfully.")
 
 # TODO add figure/image extraction plus table extraction for that same page to be paired with
@@ -113,7 +128,7 @@ def extract_tables():
 
 def main():
     # extract_tables()
-    # upload_csv_file("../resources/tablesCSV/" + "TABLE I. Mechanical control criteria.csv")
+    upload_csv_file("../resources/tablesCSV/" + "TABLE I. Mechanical control criteria.csv")
     return
 
 if __name__ == "__main__":
