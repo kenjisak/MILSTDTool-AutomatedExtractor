@@ -17,7 +17,6 @@ cleanDataFile = client.open('Copy of MilSTD1472HS5CleanData')
 milstdpdf_file_path = '../resources/MIL-STD-1472H.pdf'
 tabledata_file_path = '../resources/contentsData/tableData.txt'
 figuredata_file_path = '../resources/contentsData/figureData.txt'
-
 saved_tables_csv_filepath = "../resources/tablesCSV"
 
 def usage_limit_retry(func):
@@ -95,14 +94,6 @@ def upload_csv_file(csv_file_path):
     usage_limit_retry(lambda: worksheet.resize(rows=num_rows, cols=num_cols)) # resize sheet to be exact
     print(f"Data written to sheet '{new_sheet_name}' successfully.")
 
-# TODO add figure/image extraction plus table extraction for that same page to be paired with
-# TODO add api update requests to google sheets doc after each table
-# TODO use a sheet storage for persistence in pages alreayd processed for fast processing
-# TODO ***** add checking of first row for continuation of tables
-# TODO add function for retrying requests to reduce duplication
-
-# upload_csv_file("../resources/tablesCSV/" + "TABLE I. Mechanical control criteria.csv")
-
 def extract_tables():
     tables_page_numbers = extract_pageNumbers_from_file(tabledata_file_path)
     figures_page_numbers = extract_pageNumbers_from_file(figuredata_file_path)
@@ -113,19 +104,32 @@ def extract_tables():
     page_offset = 17 # page 1 starts after page 17, page offset + extracted page = correct page number
     title_index_counter = 0
 
-    for i in range(len(tables_page_numbers)):
+    previous_table_row_definitions = []
+    
+    for i in range(len(tables_page_numbers)): # TODO fix this so it only loops for currTables only, since theres pages in between 28 - 430 ish
         corrected_page_number = tables_page_numbers[i] + page_offset
-        currTables = camelot.read_pdf(milstdpdf_file_path,pages = str(corrected_page_number))
-        # while True:
-        #     currTables = camelot.read_pdf(milstdpdf_file_path,pages = str(47 + page_offset))
+        # currTables = camelot.read_pdf(milstdpdf_file_path,pages = str(corrected_page_number))
+        currTables = camelot.read_pdf(milstdpdf_file_path,pages="45-53")
 
         for j in range(len(currTables)):
-            # print(currTable[i].df)
+            # print(currTable[j].df)
             print("Page Number: " + str(tables_page_numbers[i]) + str(currTables[j].parsing_report))
-            currTables[j].to_csv("../resources/tablesCSV/" + tables_page_titles[title_index_counter] + '.csv')
+
+            print("DEBUGGG", previous_table_row_definitions, currTables[j].df.iloc[0].tolist(), previous_table_row_definitions == currTables[j].df.iloc[0].tolist())
+
+            # TODO refactor to be cleaner code and put into its own function for evaluation, find out other way by using nearest text/title for continued table evaluation * since doesnt always save properly for same first row
+            if previous_table_row_definitions == currTables[j].df.iloc[0].tolist(): #continued table
+                save_csv_incremental(currTables[j], saved_tables_csv_filepath,tables_page_titles[title_index_counter - 1])
+                title_index_counter -= 1
+
+            else:
+                save_csv_incremental(currTables[j], saved_tables_csv_filepath, tables_page_titles[title_index_counter])
+            
             title_index_counter += 1
-            # if currTables[j].parsing_report['accuracy'] >= 97:
-            #     break
+            previous_table_row_definitions = currTables[j].df.iloc[0].tolist()
+
+        break #TODO temp break remove after loop fix
+
 def save_csv_incremental(table, directory, base_filename):
     # Create an incremental filename
     counter = 1
@@ -141,9 +145,13 @@ def save_csv_incremental(table, directory, base_filename):
     print(f"Table saved as {path_and_filename}")
 
 def main():
-    # extract_tables()
-    upload_csv_file("../resources/tablesCSV/" + "TABLE I. Mechanical control criteria.csv")
+    extract_tables()
+    # upload_csv_file("../resources/tablesCSV/" + "TABLE I. Mechanical control criteria.csv")
     return
 
 if __name__ == "__main__":
     main()
+
+# TODO add figure/image extraction plus table extraction for that same page to be paired with
+# TODO add api update requests to google sheets doc after each table
+# TODO use a sheet storage for persistence in pages alreayd processed for fast processing
