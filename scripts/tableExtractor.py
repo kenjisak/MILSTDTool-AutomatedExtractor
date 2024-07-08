@@ -18,6 +18,7 @@ milstdpdf_file_path = '../resources/MIL-STD-1472H.pdf'
 tabledata_file_path = '../resources/contentsData/tableData.txt'
 figuredata_file_path = '../resources/contentsData/figureData.txt'
 
+saved_tables_csv_filepath = "../resources/tablesCSV"
 
 def usage_limit_retry(func):
     request_attempt = 0
@@ -125,6 +126,19 @@ def extract_tables():
             title_index_counter += 1
             # if currTables[j].parsing_report['accuracy'] >= 97:
             #     break
+def save_csv_incremental(table, directory, base_filename):
+    # Create an incremental filename
+    counter = 1
+    path_and_filename = os.path.join(directory, f"{base_filename}.csv")
+    
+    # Check if the filename already exists and create a unique filename if necessary
+    while os.path.exists(path_and_filename):
+        path_and_filename = os.path.join(directory, f"{base_filename}_{counter}.csv")
+        counter += 1
+    
+    # Save the table as a CSV file
+    table.to_csv(path_and_filename)
+    print(f"Table saved as {path_and_filename}")
 
 def main():
     # extract_tables()
