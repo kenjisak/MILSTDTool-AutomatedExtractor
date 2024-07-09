@@ -1,0 +1,40 @@
+"Function","Control","","","","","","","","",""
+"","Selector 
+Switch","Round 
+Knob","Discrete 
+Thumb 
+Wheel","Cont. 
+Thumb 
+Wheel","Crank","Push 
+Button","Toggle 
+Switch","Rocker 
+Switch","Lever","Joystick, 
+Lever, 
+Ball, 
+Mouse"
+"Coarse adjustment","--","1g","--","2h","2i","--","--","--","2j","2"
+"Fine adjustment","--","1k","--","2l","2m","--","--","--","3n","2"
+"Adjust to null position","--","1","--","2","3","--","--","--","3","2"
+"Single-coordinate tracking","--","3","--","--","2","--","--","--","1","--"
+"Two-coordinate tracking","--","--","--","--","3","--","--","--","--","1"
+"NOTE: 
+1/ 
+Key: 
+1 = most preferred 
+2 = secondary preference 
+3 = least preferred 
+a – Lever for heavy duty power circuits 
+h – Small motion 
+b – Only if sequential selection is 
+i – Few turns 
+acceptable 
+c – Keyboard 
+j – Short throw 
+d – Multiple controls 
+k – Large diameter 
+e – Rate control 
+l – Large motion 
+f – Manual only 
+m – Many turns 
+g – Small diameter 
+n – Long throw","","","","","","","","","",""

@@ -1,0 +1,35 @@
+"Control Function 
+Control Type",""
+"Small Actuation Force Required",""
+"2 discrete positions","Key lock 
+Legend switch 
+Push button 
+Slide switch 
+Toggle switch"
+"3 discrete positions","Push button 
+Rotary selector switch 
+Toggle switch"
+"4 to 24 discrete positions","Rotary selector switch"
+"Continuous setting 
+(linear and less than 360°)","Continuous rotary knob 
+Joystick or lever"
+"Continuous slewing and fine 
+adjustment","Continuous rotary knob 
+Crank 
+Joystick or lever"
+"Large Actuation Force Required",""
+"2 discrete positions","Detent lever 
+Foot push button 
+Hand push button"
+"3 to 24 discrete positions","Detent lever 
+Rotary selector switch"
+"Continuous setting 
+(linear and less than 360°)","Crank 
+Handwheel 
+Joystick or lever 
+Two-axis grip handle"
+"Continuous setting 
+(greater than 360°)","Crank 
+Handwheel 
+Two-axis grip handle 
+Valve"
