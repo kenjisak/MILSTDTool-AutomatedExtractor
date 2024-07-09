@@ -19,6 +19,8 @@ tabledata_file_path = '../resources/contentsData/tableData.txt'
 figuredata_file_path = '../resources/contentsData/figureData.txt'
 saved_tables_csv_filepath = "../resources/tablesCSV"
 
+page_offset = 17 # page 1 starts after page 17, page offset + extracted page = correct page number
+
 def usage_limit_retry(func):
     request_attempt = 0
 
@@ -34,20 +36,20 @@ def usage_limit_retry(func):
             raise
 
 # Function to extract integers from each line in a file
-def extract_pageNumbers_from_file(txt_file_path):
-    # pageNumberList = list()
-    pageNumberSet = SortedSet()
+# def extract_pageNumbers_from_file(txt_file_path):
+#     # pageNumberList = list()
+#     pageNumberSet = SortedSet()
 
-    with open(txt_file_path, 'r') as file:
-        for line in file:
-            pageNumbers = re.findall(r'\d+', line)
-            pageNumberSet.add(int(pageNumbers[-1]))
-            # pageNumberList.append(int(pageNumbers[-1]))
-    # return pageNumberSet, pageNumberList
+#     with open(txt_file_path, 'r') as file:
+#         for line in file:
+#             pageNumbers = re.findall(r'\d+', line)
+#             pageNumberSet.add(int(pageNumbers[-1]))
+#             # pageNumberList.append(int(pageNumbers[-1]))
+#     # return pageNumberSet, pageNumberList
 
-    # print(len(pageNumberSet))
-    # print(pageNumberList)
-    return pageNumberSet
+#     # print(len(pageNumberSet))
+#     # print(pageNumberList)
+#     return pageNumberSet
 
 def extract_titles_from_file(file_path):
     extracted_lines = []
@@ -95,18 +97,17 @@ def upload_csv_file(csv_file_path):
     print(f"Data written to sheet '{new_sheet_name}' successfully.")
 
 def extract_tables():
-    tables_page_numbers = extract_page_numbers(28,431)
-    figures_page_numbers = extract_pageNumbers_from_file(figuredata_file_path)
+    tables_page_numbers = extract_page_numbers(28,431)  # fixed missing page numbers for tables
+    # figures_page_numbers = extract_pageNumbers_from_file(figuredata_file_path)
 
     tables_page_titles = extract_titles_from_file(tabledata_file_path)
     figures_page_titles = extract_titles_from_file(figuredata_file_path)
 
-    page_offset = 17 # page 1 starts after page 17, page offset + extracted page = correct page number
     title_index_counter = 0
 
     previous_table_row_definitions = []
     
-    for i in range(len(tables_page_numbers)): # TODO fix this so it only loops for currTables only, since theres pages in between 28 - 430 ish
+    for i in range(len(tables_page_numbers)): 
         corrected_page_number = tables_page_numbers[i] + page_offset
         currTables = camelot.read_pdf(milstdpdf_file_path,pages = str(corrected_page_number))
 
@@ -141,7 +142,7 @@ def save_csv_incremental(table, directory, base_filename):
     table.to_csv(path_and_filename)
     print(f"Table saved as {path_and_filename}")
 
-def extract_page_numbers(start, end):
+def extract_page_numbers(start, end): # fixed missing page numbers for tables in between by using range of start and end tables number
     return list(range(start, end + 1))
 
 def main():
