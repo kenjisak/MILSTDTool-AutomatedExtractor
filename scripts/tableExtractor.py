@@ -154,6 +154,8 @@ def extract_page_numbers(start, end): # fixed missing page numbers for tables in
 
 def corresponding_table_title_extraction(table):
     # TODO use references of order in camelot of page and also text that starts with TABLE
+    # TODO add recognition of figure tables to ignore them and not save as csv, by checking matches order of FIGURE as well on the page, checks both TABLE and FIGURE matches, if the orders of table are the same and FIGURE is the table then disregard
+    
     # Open the PDF and get the specific page
     doc = pymupdf.open(milstdpdf_file_path)
     page_num = table.page - 1  # Convert to 0-index
