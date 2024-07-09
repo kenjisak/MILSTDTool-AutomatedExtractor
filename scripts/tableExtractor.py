@@ -95,7 +95,7 @@ def upload_csv_file(csv_file_path):
     print(f"Data written to sheet '{new_sheet_name}' successfully.")
 
 def extract_tables():
-    tables_page_numbers = extract_pageNumbers_from_file(tabledata_file_path)
+    tables_page_numbers = extract_page_numbers(28,431)
     figures_page_numbers = extract_pageNumbers_from_file(figuredata_file_path)
 
     tables_page_titles = extract_titles_from_file(tabledata_file_path)
@@ -108,8 +108,7 @@ def extract_tables():
     
     for i in range(len(tables_page_numbers)): # TODO fix this so it only loops for currTables only, since theres pages in between 28 - 430 ish
         corrected_page_number = tables_page_numbers[i] + page_offset
-        # currTables = camelot.read_pdf(milstdpdf_file_path,pages = str(corrected_page_number))
-        currTables = camelot.read_pdf(milstdpdf_file_path,pages="45-53")
+        currTables = camelot.read_pdf(milstdpdf_file_path,pages = str(corrected_page_number))
 
         for j in range(len(currTables)):
             # print(currTable[j].df)
@@ -128,8 +127,6 @@ def extract_tables():
             title_index_counter += 1
             previous_table_row_definitions = currTables[j].df.iloc[0].tolist()
 
-        break #TODO temp break remove after loop fix
-
 def save_csv_incremental(table, directory, base_filename):
     # Create an incremental filename
     counter = 1
@@ -143,6 +140,9 @@ def save_csv_incremental(table, directory, base_filename):
     # Save the table as a CSV file
     table.to_csv(path_and_filename)
     print(f"Table saved as {path_and_filename}")
+
+def extract_page_numbers(start, end):
+    return list(range(start, end + 1))
 
 def main():
     extract_tables()
