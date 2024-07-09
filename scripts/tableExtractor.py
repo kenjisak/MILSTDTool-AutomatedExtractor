@@ -101,7 +101,7 @@ def extract_tables():
     # figures_page_numbers = extract_pageNumbers_from_file(figuredata_file_path)
 
     tables_page_titles = extract_titles_from_file(tabledata_file_path)
-    figures_page_titles = extract_titles_from_file(figuredata_file_path)
+    # figures_page_titles = extract_titles_from_file(figuredata_file_path)
 
     title_index_counter = 0
 
@@ -115,17 +115,16 @@ def extract_tables():
             # print(currTable[j].df)
             print("Page Number: " + str(tables_page_numbers[i]) + str(currTables[j].parsing_report))
 
-            print("DEBUGGG", previous_table_row_definitions, currTables[j].df.iloc[0].tolist(), previous_table_row_definitions == currTables[j].df.iloc[0].tolist())
-
             # TODO refactor to be cleaner code and put into its own function for evaluation, find out other way by using nearest text/title for continued table evaluation * since doesnt always save properly for same first row
             if previous_table_row_definitions == currTables[j].df.iloc[0].tolist(): #continued table
-                save_csv_incremental(currTables[j], saved_tables_csv_filepath,tables_page_titles[title_index_counter - 1])
-                title_index_counter -= 1
+                currTable_filepath = save_csv_incremental(currTables[j], saved_tables_csv_filepath,tables_page_titles[title_index_counter - 1])
+                upload_csv_file(currTable_filepath)
 
             else:
-                save_csv_incremental(currTables[j], saved_tables_csv_filepath, tables_page_titles[title_index_counter])
-            
-            title_index_counter += 1
+                currTable_filepath = save_csv_incremental(currTables[j], saved_tables_csv_filepath, tables_page_titles[title_index_counter])
+                upload_csv_file(currTable_filepath)
+                title_index_counter += 1
+
             previous_table_row_definitions = currTables[j].df.iloc[0].tolist()
 
 def save_csv_incremental(table, directory, base_filename):
@@ -142,12 +141,13 @@ def save_csv_incremental(table, directory, base_filename):
     table.to_csv(path_and_filename)
     print(f"Table saved as {path_and_filename}")
 
+    return path_and_filename
+
 def extract_page_numbers(start, end): # fixed missing page numbers for tables in between by using range of start and end tables number
     return list(range(start, end + 1))
 
 def main():
     extract_tables()
-    # upload_csv_file("../resources/tablesCSV/" + "TABLE I. Mechanical control criteria.csv")
     return
 
 if __name__ == "__main__":
