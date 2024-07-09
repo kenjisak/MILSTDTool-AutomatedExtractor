@@ -1,6 +1,8 @@
 import re
 from sortedcontainers import SortedSet
 import camelot
+import pymupdf
+from camelot.parsers import Lattice
 
 import csv
 import gspread
@@ -115,17 +117,21 @@ def extract_tables():
             # print(currTable[j].df)
             print("Page Number: " + str(tables_page_numbers[i]) + str(currTables[j].parsing_report))
 
+            currTable_title = corresponding_table_title_extraction(currTables[j])
+            currTable_filepath = save_csv_incremental(currTables[j], saved_tables_csv_filepath,currTable_title)
+            # upload_csv_file(currTable_filepath)
+
             # TODO refactor to be cleaner code and put into its own function for evaluation, find out other way by using nearest text/title for continued table evaluation * since doesnt always save properly for same first row
-            if previous_table_row_definitions == currTables[j].df.iloc[0].tolist(): #continued table
-                currTable_filepath = save_csv_incremental(currTables[j], saved_tables_csv_filepath,tables_page_titles[title_index_counter - 1])
-                upload_csv_file(currTable_filepath)
+            # if previous_table_row_definitions == currTables[j].df.iloc[0].tolist(): #continued table
+            #     currTable_filepath = save_csv_incremental(currTables[j], saved_tables_csv_filepath,tables_page_titles[title_index_counter - 1])
+            #     upload_csv_file(currTable_filepath)
 
-            else:
-                currTable_filepath = save_csv_incremental(currTables[j], saved_tables_csv_filepath, tables_page_titles[title_index_counter])
-                upload_csv_file(currTable_filepath)
-                title_index_counter += 1
+            # else:
+            #     currTable_filepath = save_csv_incremental(currTables[j], saved_tables_csv_filepath, tables_page_titles[title_index_counter])
+            #     upload_csv_file(currTable_filepath)
+            #     title_index_counter += 1
 
-            previous_table_row_definitions = currTables[j].df.iloc[0].tolist()
+            # previous_table_row_definitions = currTables[j].df.iloc[0].tolist()
 
 def save_csv_incremental(table, directory, base_filename):
     # Create an incremental filename
@@ -146,6 +152,33 @@ def save_csv_incremental(table, directory, base_filename):
 def extract_page_numbers(start, end): # fixed missing page numbers for tables in between by using range of start and end tables number
     return list(range(start, end + 1))
 
+def corresponding_table_title_extraction(table):
+    # TODO use references of order in camelot of page and also text that starts with TABLE
+    # Open the PDF and get the specific page
+    doc = pymupdf.open(milstdpdf_file_path)
+    page_num = table.page - 1  # Convert to 0-index
+    page = doc.load_page(page_num)
+
+    # Extract text blocks from the page
+    text_blocks = page.get_text("blocks")
+
+    # Filter blocks that start with "TABLE" in all caps and remove slash characters
+    table_titles = [
+        block[4].replace('\n', '').replace('/', '')  # Remove newline and slash characters
+        for block in text_blocks
+        if block[4].strip().startswith("TABLE")
+    ]
+
+    # Use the table's order to select the corresponding title
+    # Assuming table.order is 1-based index and matches the order of appearance in the PDF
+    table_order = table.order - 1  # Convert to 0-based index for Python lists
+    if 0 <= table_order < len(table_titles):
+        title = table_titles[table_order]
+    else:
+        title = "No Title Found"
+
+    return title
+    
 def main():
     extract_tables()
     return

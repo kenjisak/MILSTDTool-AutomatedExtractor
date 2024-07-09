@@ -11,6 +11,7 @@ sortedcontainers = "*"
 camelot-py = {extras = ["base"], version = "*"}
 opencv-python = "*"
 pypdf2 = "<3.0"
+pymupdf = "*"
 
 [dev-packages]
 
