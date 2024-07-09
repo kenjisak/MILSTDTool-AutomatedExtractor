@@ -9,7 +9,7 @@ import os
 from definitionsScraper import exponential_backoff
 
 scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive.file','https://www.googleapis.com/auth/drive']
-creds = ServiceAccountCredentials.from_json_keyfile_name("excelscraper-11d9cd7fa778.json", scope)
+creds = ServiceAccountCredentials.from_json_keyfile_name("../resources/excelscraper-11d9cd7fa778.json", scope)
 client = gspread.authorize(creds)
 
 cleanDataFile = client.open('Copy of MilSTD1472HS5CleanData')

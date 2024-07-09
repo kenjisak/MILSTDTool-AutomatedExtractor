@@ -10,7 +10,7 @@ scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/aut
 
 # add credentials to the account
 # authorize the clientsheet 
-creds = ServiceAccountCredentials.from_json_keyfile_name("excelscraper-11d9cd7fa778.json", scope)
+creds = ServiceAccountCredentials.from_json_keyfile_name("../resources/excelscraper-11d9cd7fa778.json", scope)
 client = gspread.authorize(creds)
 
 # Function to perform exponential backoff
