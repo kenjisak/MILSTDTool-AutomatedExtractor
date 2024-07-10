@@ -161,5 +161,3 @@ if __name__ == "__main__":
     main()
 
 # TODO add figure/image extraction plus table extraction for that same page to be paired with
-# TODO use a sheet storage for persistence in pages alreayd processed for fast processing
-# TODO uses the page titles numbers extracted from the text file, then check if theres a table in the direct next page before moving on in the page number list, and if there is, add it to the the sorted set list. do this check for each page using pymupdf
