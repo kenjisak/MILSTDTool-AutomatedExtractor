@@ -124,19 +124,7 @@ def extract_tables():
                 continue
             
             currTable_filepath = save_csv_incremental(currTables[j], saved_tables_csv_filepath,currTable_title)
-            # upload_csv_file(currTable_filepath)
-
-            # TODO refactor to be cleaner code and put into its own function for evaluation, find out other way by using nearest text/title for continued table evaluation * since doesnt always save properly for same first row
-            # if previous_table_row_definitions == currTables[j].df.iloc[0].tolist(): #continued table
-            #     currTable_filepath = save_csv_incremental(currTables[j], saved_tables_csv_filepath,tables_page_titles[title_index_counter - 1])
-            #     upload_csv_file(currTable_filepath)
-
-            # else:
-            #     currTable_filepath = save_csv_incremental(currTables[j], saved_tables_csv_filepath, tables_page_titles[title_index_counter])
-            #     upload_csv_file(currTable_filepath)
-            #     title_index_counter += 1
-
-            # previous_table_row_definitions = currTables[j].df.iloc[0].tolist()
+            # TODO uncomment to upload upload_csv_file(currTable_filepath)
 
 def save_csv_incremental(table, directory, base_filename):
     # Create an incremental filename
@@ -158,9 +146,6 @@ def extract_page_numbers(start, end): # fixed missing page numbers for tables in
     return list(range(start, end + 1))
 
 def corresponding_table_title_extraction(table):
-    # TODO use references of order in camelot of page and also text that starts with TABLE
-    # TODO add recognition of figure tables to ignore them and not save as csv, by checking matches order of FIGURE as well on the page, checks both TABLE and FIGURE matches, if the orders of table are the same and FIGURE is the table then disregard
-    
     # Open the PDF and get the specific page
     doc = pymupdf.open(milstdpdf_file_path)
     page_num = table.page - 1  # Convert to 0-index
@@ -179,8 +164,10 @@ def corresponding_table_title_extraction(table):
     # Use the table's order to select the corresponding title
     # Assuming table.order is 1-based index and matches the order of appearance in the PDF
     table_order = table.order - 1  # Convert to 0-based index for Python lists
+    file_number = len([name for name in os.listdir(saved_tables_csv_filepath) if os.path.isfile(os.path.join(saved_tables_csv_filepath, name))]) + 1 
+
     if 0 <= table_order < len(table_titles):
-        title = table_titles[table_order]
+        title = str(file_number) + ". " + table_titles[table_order]
     else:
         title = None
 
@@ -194,5 +181,5 @@ if __name__ == "__main__":
     main()
 
 # TODO add figure/image extraction plus table extraction for that same page to be paired with
-# TODO add api update requests to google sheets doc after each table
 # TODO use a sheet storage for persistence in pages alreayd processed for fast processing
+# TODO uses the page titles numbers extracted from the text file, then check if theres a table in the direct next page before moving on in the page number list, and if there is, add it to the the sorted set list. do this check for each page using pymupdf
