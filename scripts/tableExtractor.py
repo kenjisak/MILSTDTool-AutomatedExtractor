@@ -119,6 +119,10 @@ def extract_tables():
             print("Page Number: " + str(tables_page_numbers[i]) + str(currTables[j].parsing_report))
 
             currTable_title = corresponding_table_title_extraction(currTables[j])
+            
+            if currTable_title == None:
+                continue
+            
             currTable_filepath = save_csv_incremental(currTables[j], saved_tables_csv_filepath,currTable_title)
             # upload_csv_file(currTable_filepath)
 
@@ -178,10 +182,10 @@ def corresponding_table_title_extraction(table):
     if 0 <= table_order < len(table_titles):
         title = table_titles[table_order]
     else:
-        title = "No Title Found"
+        title = None
 
     return title
-    
+
 def main():
     extract_tables()
     return
