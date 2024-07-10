@@ -114,24 +114,9 @@ def extract_tables():
             if currTable_title == None:
                 continue
             
-            currTable_filepath = save_csv_incremental(currTables[j], saved_tables_csv_filepath,currTable_title)
+            currTable_filepath = os.path.join(saved_tables_csv_filepath, f"{currTable_title}.csv")
+            currTables[j].to_csv(currTable_filepath)
             # TODO uncomment to upload upload_csv_file(currTable_filepath)
-
-def save_csv_incremental(table, directory, base_filename):
-    # Create an incremental filename
-    counter = 1
-    path_and_filename = os.path.join(directory, f"{base_filename}.csv")
-    
-    # Check if the filename already exists and create a unique filename if necessary
-    while os.path.exists(path_and_filename):
-        path_and_filename = os.path.join(directory, f"{base_filename}_{counter}.csv")
-        counter += 1
-    
-    # Save the table as a CSV file
-    table.to_csv(path_and_filename)
-    print(f"Table saved as {path_and_filename}")
-
-    return path_and_filename
 
 def extract_page_numbers(start, end): # fixed missing page numbers for tables in between by using range of start and end tables number
     return list(range(start, end + 1))
@@ -145,7 +130,7 @@ def corresponding_table_title_extraction(table):
     file_number = len([name for name in os.listdir(saved_tables_csv_filepath) if os.path.isfile(os.path.join(saved_tables_csv_filepath, name))]) + 1 
 
     if 0 <= table_order < len(table_titles):
-        title = str(file_number) + ". " + table_titles[table_order]
+        title = str(file_number) + ". " + re.sub(r"[\s\.0-9]+$", "", table_titles[table_order]) # removes trailing: periods, spaces, numbers
     else:
         title = None
 
