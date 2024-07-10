@@ -39,20 +39,15 @@ def usage_limit_retry(func):
             raise
 
 # Function to extract integers from each line in a file
-# def extract_pageNumbers_from_file(txt_file_path):
-#     # pageNumberList = list()
-#     pageNumberSet = SortedSet()
+def extract_pageNumbers_from_file(txt_file_path):
+    pageNumberSet = SortedSet()
 
-#     with open(txt_file_path, 'r') as file:
-#         for line in file:
-#             pageNumbers = re.findall(r'\d+', line)
-#             pageNumberSet.add(int(pageNumbers[-1]))
-#             # pageNumberList.append(int(pageNumbers[-1]))
-#     # return pageNumberSet, pageNumberList
+    with open(txt_file_path, 'r') as file:
+        for line in file:
+            pageNumbers = re.findall(r'\d+', line)
+            pageNumberSet.add(int(pageNumbers[-1]))
 
-#     # print(len(pageNumberSet))
-#     # print(pageNumberList)
-#     return pageNumberSet
+    return pageNumberSet
 
 def extract_titles_from_file(file_path):
     extracted_lines = []
@@ -62,9 +57,6 @@ def extract_titles_from_file(file_path):
             match = re.match(r'^(.*?)(\s*\.*\d*\s*)$', line)
             if match:
                 extracted_lines.append(match.group(1).strip())
-
-    # for text in extracted_lines:
-    #     print(text)
 
     return extracted_lines
 
@@ -100,22 +92,21 @@ def upload_csv_file(csv_file_path):
     print(f"Data written to sheet '{new_sheet_name}' successfully.")
 
 def extract_tables():
-    tables_page_numbers = extract_page_numbers(28,431)  # fixed missing page numbers for tables
+    tables_page_numbers = extract_pageNumbers_from_file(tabledata_file_path)  # fixed missing page numbers for tables
     # figures_page_numbers = extract_pageNumbers_from_file(figuredata_file_path)
 
     tables_page_titles = extract_titles_from_file(tabledata_file_path)
     # figures_page_titles = extract_titles_from_file(figuredata_file_path)
-
-    title_index_counter = 0
-
-    previous_table_row_definitions = []
     
-    for i in range(len(tables_page_numbers)): 
+    for i in range(len(tables_page_numbers)):
         corrected_page_number = tables_page_numbers[i] + page_offset
+
+        if table_titles_matches(corrected_page_number + 1): # checks if the next page has a TABLE title and adds that page number into the sorted set, if it doesn't that means there isn't a TABLE continued. helps shorten time to process 
+            tables_page_numbers.add(tables_page_numbers[i] + 1)
+
         currTables = camelot.read_pdf(milstdpdf_file_path,pages = str(corrected_page_number))
 
         for j in range(len(currTables)):
-            # print(currTable[j].df)
             print("Page Number: " + str(tables_page_numbers[i]) + str(currTables[j].parsing_report))
 
             currTable_title = corresponding_table_title_extraction(currTables[j])
