@@ -146,20 +146,7 @@ def extract_page_numbers(start, end): # fixed missing page numbers for tables in
     return list(range(start, end + 1))
 
 def corresponding_table_title_extraction(table):
-    # Open the PDF and get the specific page
-    doc = pymupdf.open(milstdpdf_file_path)
-    page_num = table.page - 1  # Convert to 0-index
-    page = doc.load_page(page_num)
-
-    # Extract text blocks from the page
-    text_blocks = page.get_text("blocks")
-
-    # Filter blocks that start with "TABLE" in all caps and remove slash characters
-    table_titles = [
-        block[4].replace('\n', '').replace('/', '')  # Remove newline and slash characters
-        for block in text_blocks
-        if block[4].strip().startswith("TABLE")
-    ]
+    table_titles = table_titles_matches(table.page)
 
     # Use the table's order to select the corresponding title
     # Assuming table.order is 1-based index and matches the order of appearance in the PDF
@@ -173,6 +160,23 @@ def corresponding_table_title_extraction(table):
 
     return title
 
+def table_titles_matches(one_index_page_number):
+    # Open the PDF and get the specific page
+    doc = pymupdf.open(milstdpdf_file_path)
+    page_num = one_index_page_number - 1  # Convert to 0-index
+    page = doc.load_page(page_num)
+
+    # Extract text blocks from the page
+    text_blocks = page.get_text("blocks")
+
+    # Filter blocks that start with "TABLE" in all caps and remove slash characters
+    table_titles = [
+        block[4].replace('\n', '').replace('/', '')  # Remove newline and slash characters
+        for block in text_blocks
+        if block[4].strip().startswith("TABLE")
+    ]
+
+    return table_titles
 def main():
     extract_tables()
     return
