@@ -1,14 +1,15 @@
 import re
-from sortedcontainers import SortedSet
+import os
+import csv
+from definitionsScraper import exponential_backoff
+
 import camelot
 import pymupdf
-from camelot.parsers import Lattice
 
-import csv
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-import os
-from definitionsScraper import exponential_backoff
+
+from sortedcontainers import SortedSet
 
 scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive.file','https://www.googleapis.com/auth/drive']
 creds = ServiceAccountCredentials.from_json_keyfile_name("../resources/excelscraper-11d9cd7fa778.json", scope)
