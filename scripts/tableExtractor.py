@@ -63,6 +63,7 @@ def extract_titles_from_file(file_path):
 def upload_csv_file(csv_file_path):
     # Extract the name of the CSV file without the extension
     new_sheet_name = os.path.splitext(os.path.basename(csv_file_path))[0]
+    new_sheet_name = convert_to_sheet_name(new_sheet_name)
 
     # Read data from the CSV file
     with open(csv_file_path, mode='r', newline='', encoding='utf-8') as file:
@@ -116,7 +117,7 @@ def extract_tables():
             
             currTable_filepath = os.path.join(saved_tables_csv_filepath, f"{currTable_title}.csv")
             currTables[j].to_csv(currTable_filepath)
-            # TODO uncomment to upload upload_csv_file(currTable_filepath)
+            upload_csv_file(currTable_filepath)
 
 def extract_page_numbers(start, end): # fixed missing page numbers for tables in between by using range of start and end tables number
     return list(range(start, end + 1))
@@ -153,6 +154,27 @@ def table_titles_matches(one_index_page_number):
     ]
 
     return table_titles
+
+def convert_to_sheet_name(filepath):
+    parts = filepath.split(' ')
+    result_parts = []
+
+    # Keep up to the third space
+    for i, part in enumerate(parts):
+        if i < 3:  # Keep parts up to the third space
+            result_parts.append(part)
+        else:
+            break
+
+    # Check if "Continued" exists in the title
+    if "Continued" in parts:
+        result_parts.append(" Continued")
+
+    # Reconstruct the title
+    result_title = ' '.join(result_parts)
+
+    return result_title
+
 def main():
     extract_tables()
     return
