@@ -61,9 +61,10 @@ def extract_titles_from_file(file_path):
     return extracted_lines
 
 def upload_csv_file(csv_file_path):
+    # TODO add center of table titles AND remove file numbers in the front
     # Extract the name of the CSV file without the extension
-    new_sheet_name = os.path.splitext(os.path.basename(csv_file_path))[0]
-    new_sheet_name = convert_to_sheet_name(new_sheet_name)
+    full_sheet_name = os.path.splitext(os.path.basename(csv_file_path))[0]
+    new_sheet_name = convert_to_sheet_name(full_sheet_name).strip()
 
     # Read data from the CSV file
     with open(csv_file_path, mode='r', newline='', encoding='utf-8') as file:
@@ -73,23 +74,50 @@ def upload_csv_file(csv_file_path):
     num_rows = len(data) #inserts a row so dont need to set the size to exact
     num_cols = max(len(row) for row in data)
 
-    # Check if the sheet already exists
-    try:
-        worksheet = usage_limit_retry(lambda: cleanDataFile.worksheet(new_sheet_name))
-        print(f"Sheet '{new_sheet_name}' already exists.")
-    except gspread.exceptions.WorksheetNotFound:
-        # Create a new sheet with the name derived from the CSV file name
-        worksheet = usage_limit_retry(lambda: cleanDataFile.add_worksheet(title=new_sheet_name, rows=num_rows, cols=num_cols))
-        print(f"New sheet '{new_sheet_name}' created.")
+    worksheet = None
+    
+    end_col_letter = chr(ord('A') + num_cols - 1)  # Convert column number to letter for the last column
+    if "Continued" in new_sheet_name:
 
-    # Clear the existing content in the worksheet
-    usage_limit_retry(lambda: worksheet.clear())
+        existing_sheet_name = new_sheet_name.replace(" Continued", "").strip()
+        request_attempt = 0
+        while True:
+            try:
+                worksheet = usage_limit_retry(lambda: cleanDataFile.worksheet(existing_sheet_name))
+                break
+            except gspread.exceptions.WorksheetNotFound:
+                print(f"Retrying {existing_sheet_name} look up...")
+                request_attempt += 1
+                exponential_backoff(request_attempt)
 
-    # Write the data to the new Google Sheet
-    for row_index, row in enumerate(data, start=1):
-        usage_limit_retry(lambda: worksheet.insert_row(row, row_index))
+        continued_title_index = worksheet.row_count + 1
+        usage_limit_retry(lambda: worksheet.resize(rows=continued_title_index, cols=num_cols)) # resize sheet to be exact
+        merge_range = f"A{worksheet.row_count}:{end_col_letter}{continued_title_index}" # row_count to use the index of the last row in the sheet for continuation
+        usage_limit_retry(lambda: worksheet.merge_cells(merge_range))
+        usage_limit_retry(lambda: worksheet.update([[full_sheet_name]], f"A{continued_title_index}"))
 
-    usage_limit_retry(lambda: worksheet.resize(rows=num_rows, cols=num_cols)) # resize sheet to be exact
+        # Write the data to the new Google Sheet
+        for row in data:
+            usage_limit_retry(lambda: worksheet.append_row(row))
+
+    else:
+        try:
+            worksheet = usage_limit_retry(lambda: cleanDataFile.worksheet(new_sheet_name))
+            print(f"Sheet '{new_sheet_name}' already exists.")
+        except gspread.exceptions.WorksheetNotFound:
+            # Create a new sheet with the name derived from the CSV file name
+            worksheet = usage_limit_retry(lambda: cleanDataFile.add_worksheet(title=new_sheet_name, rows=num_rows, cols=num_cols))
+            print(f"New sheet '{new_sheet_name}' created.")
+
+        merge_range = f"A1:{end_col_letter}1"
+        usage_limit_retry(lambda: worksheet.merge_cells(merge_range))
+        usage_limit_retry(lambda: worksheet.update([[full_sheet_name]], f"A1"))
+
+        # Write the data to the new Google Sheet
+        for row_index, row in enumerate(data, start=2):
+            usage_limit_retry(lambda: worksheet.insert_row(row, row_index))
+
+        usage_limit_retry(lambda: worksheet.resize(rows=num_rows, cols=num_cols)) # resize sheet to be exact
     print(f"Data written to sheet '{new_sheet_name}' successfully.")
 
 def extract_tables():
