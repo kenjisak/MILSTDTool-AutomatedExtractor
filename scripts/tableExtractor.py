@@ -157,23 +157,18 @@ def table_titles_matches(one_index_page_number):
 
 def convert_to_sheet_name(filepath):
     parts = filepath.split(' ')
-    result_parts = []
+    table_num_part = []
 
-    # Keep up to the third space
-    for i, part in enumerate(parts):
-        if i < 3:  # Keep parts up to the third space
-            result_parts.append(part)
-        else:
-            break
+    table_num_part.append(parts[1]) # get only TABLE and Number
+    table_num_part.append(parts[2])
 
     # Check if "Continued" exists in the title
     if "Continued" in parts:
-        result_parts.append(" Continued")
+        table_num_part.append(" Continued")
 
-    # Reconstruct the title
-    result_title = ' '.join(result_parts)
+    table_num_title = ' '.join(table_num_part)
 
-    return result_title
+    return table_num_title
 
 def main():
     extract_tables()
