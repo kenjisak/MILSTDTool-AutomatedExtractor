@@ -1,6 +1,5 @@
-"Task Variable","Definition"
-"Horizontal Distance (H)","Distance between the point of projection of the center of gravity of the load 
-and the point of projection of the center of gravity of the person"
-"Vertical Distance (V)","Vertical distance from the center of gravity of the load to the floor"
-"Travel Distance (D)","Vertical travel distance between the origin and destination of the lift"
-"Asymmetry Angle (A)","Angular displacement of the load from the sagittal and asymmetry lines"
+FOOTNOTE:,
+1/ The unit of measure for A is degrees.,
+NOTES:,
+1. This table is sourced from the Applications Manual for the Revised NIOSH Lifting Equation.,
+"2. The multipliers may not exceed 1.0. If the calculation yields a value of greater than 1.0, it is considered to be “ideal” and is set to 1.0. If the travel distance (D) is 10 cm, the equation yields 0.82+(4.5/10) = 1.27. Since this is greater than 1.0, the DM is set to 1.0, the max value.",
