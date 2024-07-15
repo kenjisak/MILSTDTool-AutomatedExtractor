@@ -86,6 +86,10 @@ def upload_csv_file(csv_file_path):
                 exponential_backoff(request_attempt)
 
         continued_title_index = worksheet.row_count + 1
+
+        num_cols = max(num_cols,worksheet.col_count)
+        end_col_letter = chr(ord('A') + num_cols - 1)  # Convert column number to letter for the last column
+
         usage_limit_retry(lambda: worksheet.resize(rows=continued_title_index, cols=num_cols)) # resize sheet to be exact
         merge_range = f"A{worksheet.row_count}:{end_col_letter}{continued_title_index}" # row_count to use the index of the last row in the sheet for continuation
         usage_limit_retry(lambda: worksheet.merge_cells(merge_range))
@@ -208,6 +212,8 @@ def main():
     for filename in sorted_filenames:
         filepath = os.path.join(saved_tables_csv_filepath, filename)
         upload_csv_file(filepath) # Process the file in the correct order
+    # filepath = os.path.join(saved_tables_csv_filepath, sorted_filenames[-1])
+    # upload_csv_file(filepath) # Process the file in the correct order
     return
 
 if __name__ == "__main__":
