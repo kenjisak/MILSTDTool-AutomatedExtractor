@@ -7,6 +7,7 @@ import camelot
 import pymupdf
 
 import gspread
+from gspread_formatting import *
 from oauth2client.service_account import ServiceAccountCredentials
 
 from sortedcontainers import SortedSet
@@ -100,7 +101,7 @@ def upload_csv_file(csv_file_path):
         merge_range = f"A{worksheet.row_count}:{end_col_letter}{continued_title_index}" # row_count to use the index of the last row in the sheet for continuation
         usage_limit_retry(lambda: worksheet.merge_cells(merge_range))
         usage_limit_retry(lambda: worksheet.update([[file_num_rmv_csv_title]], f"A{continued_title_index}"))
-
+        format_cell_range(cleanDataFile.worksheet(existing_sheet_name), merge_range, CellFormat(horizontalAlignment='CENTER'))
         # Write the data to the new Google Sheet
         for row in data:
             usage_limit_retry(lambda: worksheet.append_row(row))
@@ -117,6 +118,7 @@ def upload_csv_file(csv_file_path):
         merge_range = f"A1:{end_col_letter}1"
         usage_limit_retry(lambda: worksheet.merge_cells(merge_range))
         usage_limit_retry(lambda: worksheet.update([[file_num_rmv_csv_title]], f"A1"))
+        format_cell_range(cleanDataFile.worksheet(new_sheet_name), merge_range, CellFormat(horizontalAlignment='CENTER'))
 
         # Write the data to the new Google Sheet
         for row_index, row in enumerate(data, start=2):
