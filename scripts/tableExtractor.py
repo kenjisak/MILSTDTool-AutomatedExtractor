@@ -50,17 +50,6 @@ def extract_pageNumbers_from_file(txt_file_path):
 
     return pageNumberSet
 
-def extract_titles_from_file(file_path):
-    extracted_lines = []
-    with open(file_path, 'r') as file:
-        for line in file:
-            # Use regex to match text before the trailing dots and digits
-            match = re.match(r'^(.*?)(\s*\.*\d*\s*)$', line)
-            if match:
-                extracted_lines.append(match.group(1).strip())
-
-    return extracted_lines
-
 def upload_csv_file(csv_file_path):
     # TODO add center of table titles AND remove file numbers in the front
     # Extract the name of the CSV file without the extension
@@ -127,13 +116,8 @@ def upload_csv_file(csv_file_path):
         usage_limit_retry(lambda: worksheet.resize(rows=num_rows, cols=num_cols)) # resize sheet to be exact
     print(f"Data written to sheet '{new_sheet_name}' successfully.")
 
-def extract_tables():
-    tables_page_numbers = extract_pageNumbers_from_file(tabledata_file_path)  # fixed missing page numbers for tables
-    # figures_page_numbers = extract_pageNumbers_from_file(figuredata_file_path)
+def extract_tables(tables_page_numbers):
 
-    tables_page_titles = extract_titles_from_file(tabledata_file_path)
-    # figures_page_titles = extract_titles_from_file(figuredata_file_path)
-    
     for i in range(len(tables_page_numbers)):
         corrected_page_number = tables_page_numbers[i] + page_offset
 
@@ -152,7 +136,7 @@ def extract_tables():
             
             currTable_filepath = os.path.join(saved_tables_csv_filepath, f"{currTable_title}.csv")
             currTables[j].to_csv(currTable_filepath)
-            upload_csv_file(currTable_filepath)
+            # upload_csv_file(currTable_filepath)
 
 def extract_page_numbers(start, end): # fixed missing page numbers for tables in between by using range of start and end tables number
     return list(range(start, end + 1))
@@ -206,10 +190,16 @@ def convert_to_sheet_name(filepath):
     return table_num_title
 
 def main():
-    extract_tables()
+    # print(extract_pageNumbers_from_file(tabledata_file_path))  # fixed missing page numbers for tables
+
+    extract_tables(extract_pageNumbers_from_file(tabledata_file_path)) # full document, * need to double checkfile names, doesn't always find the tables
+    # extract_tables(SortedSet([428])) # specific pages to search for tables
+    # upload_csv_file()
     return
 
 if __name__ == "__main__":
     main()
 
 # TODO add figure/image extraction plus table extraction for that same page to be paired with
+# TODO strip each text added with broken characters
+# TODO possibly add retry of pages until a table is found

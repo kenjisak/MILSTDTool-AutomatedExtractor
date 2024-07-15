@@ -1,0 +1,50 @@
+"Color","Maps and Tactical 
+Meaning","Classification 
+Meaning","Alarm, Alert, Threat Meaning","Equipment Meaning","Other Common Meaning"
+"Red","Red alert 
+Forces or situation at critical 
+condition 
+Hostile target identification","Secret","Critical consequences 
+Danger or unsafe 
+Severe threat 
+Emergency 
+Alarm","Closed/stopped 
+Oxygen 
+Malfunction 
+Ordnance handling","Stop 
+Heat or fire 
+Failure 
+OFF (as opposed to ON)"
+"Orange","","Top Secret","Alarm, alert, or hazard 
+High threat","","Value between red and yellow"
+"Yellow","Forces or situation at 
+marginal condition 
+Unknown target affiliation 
+CBRNE areas","","Warning, caution, or hazard 
+Elevated threat 
+Approaching critical 
+Extreme caution 
+Impending danger","Oil","Abnormal state 
+Delay 
+Check or recheck"
+"Green","Non-alert 
+Neutral target affiliation 
+Obstacles 
+Forces or situation at 
+acceptable condition","Unclassified","Normal 
+Safe 
+Low threat","Open/flowing","Maintenance personnel 
+ON (as opposed to OFF) 
+In tolerance, acceptable 
+Ready, proceed, satisfactory"
+"Blue","Friendly affiliation 
+Deep water","","Safe 
+Guarded threat","Non-critical items 
+Water or flooding 
+Nitrogen","Cool or cold"
+"Cyan","Friendly affiliation","","Advisory","Aerated water","Cool"
+"Dark 
+(navy) 
+blue","","","Advisory","Untreated water",""
+"Magenta","","","Alarm state","",""
+"","","","Radiation hazard","",""

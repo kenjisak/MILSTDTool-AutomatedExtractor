@@ -1,0 +1,49 @@
+"Illumination Level 1/","","","Work Area or Type of Task","Illumination Level",""
+"Work Area for Type of Task 
+Preferred 
+Minimum 
+lux (fc) 
+lux (fc)","","","","Preferred 
+lux (fc)","Minimum 
+lux (fc)"
+"Assembly, bench, & inspection","","","Mess room (cafeteria)","540 (50)","300 (28)"
+"Coarse work detail","540 (50)","325 (30)","Muster station","540 (50)","200 (18)"
+"Medium work detail","810 (75)","540 (50)","Medical space","",""
+"Fine work detail","1075 (100)","810 (75)","Waiting area 
+755 (70) 
+540 (50)","",""
+"Precise work detail","3230 (300)","2155 (200)","Exam/treatment room 
+1075 (100) 
+810 (75)","",""
+"Assembly (missile component)","1075 (100)","540 (50)","Missile facilities","",""
+"Bakery","540 (50)","325 (30)","General inspection","540 (50)","325 (30)"
+"Battery room","300 (28)","200 (18)","Repair and service","1075 (100)","540 (50)"
+"Bomb shelters & mobile 
+shelters","20 (2.0)","10 (1.0)","Storage areas","215 (20)","215 (20)"
+"Bridge","540 (50)","325 30)","Offices","",""
+"Business machine operation","1075 (100)","540 (50)","General 
+755 (70) 
+540 (50)","",""
+"Cargo handling (weather decks)","215 (20)","150 (14)","Computer workstation 
+540 (50) 
+300 (28)","",""
+"Chart room","","","Ordinary visual tasks 
+540 (50) 
+325 (30)","",""
+"General lighting 
+540 (50) 
+150 (14)","","","Paint room","",""
+"On chart table 
+1075 (100) 
+810 (75)","","","General","540 (50)","325 (30)"
+"Circuit diagram 
+1075 (100) 
+540 (50)","","","Color matching","2155 (200)","2155 (200)"
+"Control rooms","","","Passageways (walkways, 
+hallways)","215 (20)","150 (14)"
+"General lighting","540 (50)","325 (30)","Pump room","340 (32)","225 (20)"
+"Computer work","300 (28)","300 (28)","Pump rows, valves","200 (18)","150 (14)"
+"Computer work station","540 (50)","300 (28)","Purifier room (water or oil)","500 (46)","215 (20)"
+"Consoles (front)","540 (50)","325 (30)","Radar room","540 (50)","200 (18)"
+"Consoles (rear)","325 (30)","110 (10)","Radio room","540 (50)","540 (50)"
+"Compressor/pump/generator","300 (28)","200 (18)","","",""

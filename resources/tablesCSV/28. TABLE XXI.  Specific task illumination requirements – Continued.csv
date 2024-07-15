@@ -1,0 +1,56 @@
+"Work Area for Type of Task","Illumination Level 1/","","Illumination Level","",""
+"","Preferred 
+lux (fc)","Minimum 
+lux (fc)","Work Area or Type of Task 
+Preferred 
+Minimum 
+lux (fc) 
+lux (fc)","",""
+"Crane cab","540 (50)","400 (37)","Reading","",""
+"Dials/gauges","540 (50)","325 (30)","Large print","325 (30)","110 (10)"
+"Electrical equipment testing","540 (50)","325 (30)","Newsprint","540 (50)","325 (30)"
+"Elevators","325 (30)","215 (20)","Small type/prolonged 
+reading","755 (70)","540 (50)"
+"Emergency lighting","55 (5.0)","30 (3.0)","Recording","755 (70)","540 (50)"
+"Emergency generator room","340 (32)","225 (20)","Recreation rooms","540 (50)","300 (28)"
+"Escape trunks","55 (5.0)","30 (3.0)","Repair rooms","",""
+"Fan room","200 (18)","150 (14)","General lighting 
+540 (50) 
+325 (30)","",""
+"Fire pump room","300 (28)","200 (18)","Instrument repair 
+2155 (200) 
+1075 (100)","",""
+"Food storage","","","Sanitary spaces","",""
+"Non-refrigerated","540 (50)","200 (18)","General","540 (50)","325 (30)"
+"Refrigerated","215 (20)","100 (9.0)","Sinks and mirrors","540 (50)","540 (50)"
+"Galley","755 (70)","540 (50)","Toilets","540 (50)","150 (14)"
+"Gyro room","300 (28)","200 (18)","Scales","540 (50)","325 (30)"
+"HVAC room","300 (28)","200 (18)","Screw fastening","540 (50)","325 (30)"
+"Instrument shop","540 (50)","325 (30)","Service areas (general)","215 (20)","110 (10)"
+"Laundry","","","Shaft alley","215 (20)","110 (10)"
+"General","540 (50)","540 (50)","Snack and coffee bar","540 (50)","500 (46)"
+"Hand pressing","1395 (150)","1395 (150)","Stairs and ladders","215 (20)","110 (10)"
+"Lay down areas","540 (50)","200 (18)","Storage areas","",""
+"Laboratory","540 (50)","360 (33)","General warehouse","110 (10)","55 (5.0)"
+"Library","755 (70)","540 (50)","Large parts","110 (10)","55 (5.0)"
+"Loading/off-loading area","340 (32)","150 (14)","Small parts","300 (28)","300 (28)"
+"Lounges","540 (50)","300 (28)","Fine parts","540 (50)","540 (50)"
+"Manifold area","215 (20)","100 (9.0)","Steering gear room","540 (50)","300 (28)"
+"Machine operation (automatic)","540 (50)","325 (30)","Switchboards","540 (50)","325 (30)"
+"Machine shop","","","Tanks","215 (20)","215 (20)"
+"General lighting","540 (50)","325 (30)","Testing (see assembly)","",""
+"Fine bench work","1075 (100)","745 (80)","Welding/mechanical shop 
+500 (46) 
+500 (46)","",""
+"Maintenance platform","540 (50)","200 (18)","Windlass room 
+215 (20) 
+100 (9.0)","",""
+"Machinery room","540 (50)","200 (18)","Work and repair areas 
+700 (65) 
+540 (50)","",""
+"FOOTNOTE: 
+1/ 
+As measured at the task object or 76 cm (30 in) above the floor. 
+NOTE:  Task lighting inside vehicles shall be designed to accommodate the specific tasks to be performed within 
+the vehicle while still ensuring that the lighting will neither distract or impair the driver’s performance nor create an 
+unacceptable visual signature.  This may include continuously variable intensity controls.","","","","",""

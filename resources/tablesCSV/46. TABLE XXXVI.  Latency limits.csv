@@ -1,0 +1,13 @@
+"Control Operation 
+(Performed by Human)","Air 
+(UAV/RPA)","Ground 
+(UGV)","Underwater 
+(UUV)","Surface 
+(USV)","Orbital 
+(UOV)"
+"Vehicle motion control","100 ms","250 ms","1/","1/","1/"
+"Weapon system control","100 ms","100 ms","1/","1/","1/"
+"NOTE: 
+1/ 
+Latency limits must incorporate good human engineering practice and state-of-the-art methods until 
+detailed specification data can be developed.","","","","",""

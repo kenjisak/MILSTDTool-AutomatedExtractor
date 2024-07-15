@@ -1,0 +1,55 @@
+"Category","Description of Environment","Frequency Range and 
+Directions","Exposure Criteria"
+"A","The environment is classified as 
+strictly vibration and can be 
+characterized as oscillatory in nature 
+(periodic). 
+Examples:  Ground vehicles on 
+relatively smooth road and aircraft 
+with minimal to moderate turbulence","0.5 to 80 Hz* 
+X, Y, and Z 
+(note:  refer to ISO 2631-1 
+Figure 1, Basicentric axes of 
+the human body)","Health (5.5.5.1.5) 
+Comfort (5.5.5.1.6) 
+Perception (5.5.5.1.7) 
+Performance (5.5.5.1.8)"
+"B","The environment is classified as 
+predominately vibration and can be 
+characterized as oscillatory in nature 
+(periodic) but also contains occasional 
+shocks or transient vibration 
+(aperiodic). 
+Examples:  Off-road ground vehicles 
+with severe terrain and aircraft in 
+severe buffeting","0.5 to 80 Hz* 
+X, Y, and Z 
+(note:  refer to ISO 2631-1 
+Figure 1, Basicentric axes of 
+the human body)","Health (5.5.5.1.5) 
+Comfort (5.5.5.1.6) 
+Perception (5.5.5.1.7) 
+Performance (5.5.5.1.8)"
+"C","The environment may contain some 
+underlying vibration, but is dominated 
+by repeated or multiple shocks or 
+transient vibration exceeding  
+9.81 ms-2 or 1 g. 
+Examples:  Aircraft in extreme 
+buffeting; vessels at 20+ knots in sea 
+state 5","0.01 to 80 Hz 
+Vertical (Z) Only","Health (5.5.5.1.5)"
+"D","The environment is classified as low 
+frequency oscillatory motion at or 
+below 0.5 Hz that can cause kinetosis 
+or motion sickness and other 
+associated syndromes. 
+Examples:  Motion in ships, undersea 
+vehicles, sea rescue vehicles, and 
+other sea vessels; low frequency 
+oscillations during aircraft 
+maneuvering; spacecraft","0.1 to 0.5 Hz 
+Vertical (Z) Only","Motion Sickness (5.5.5.1.9)"
+"NOTE:  Some environments may include major frequency components beyond 80 Hz that consistently occur 
+during vehicle operation (i.e., some propeller aircraft).  A higher frequency range may be warranted in these 
+cases.  ISO 2631-1 provides one-third octave weightings up to 400 Hz.","","",""

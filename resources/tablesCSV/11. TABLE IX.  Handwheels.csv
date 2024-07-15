@@ -1,0 +1,48 @@
+"Configuration Example","Application 
+Criteria","Design Criteria","","","",""
+"","","Dimensions","","","Displacement","Separation"
+"","","Diameter","Rim Diameter","Minimum Hand 
+Clearance","",""
+"","Continuous 
+adjustment for 
+alternate 
+slewing/precise 
+positioning using 
+display reference.  
+Resistance low (e.g., 
+below 110 N [25 lb])","200 to 510 mm 
+(8 to 20 in)","19 to 32 mm 
+(0.75 to 1.125 in)","75 mm (3 in) 
+around rim","See 
+control/display 
+ratios (5.1.2.4)","710 mm (28 in) 
+elbow-elbow 
+clearance"
+"","Continuous 
+lock-unlock 
+operation","200 mm (8 in) for 
+22 N (5 lb) to 510 mm 
+(20 in) for 155 N 
+(35 lb)","19 to 32 mm 
+(0.75 to 1.125 in)","75 mm (3 in) 
+around rim","N/A","710 mm (28 in) 
+elbow-elbow 
+clearance"
+"","High torque valves","200 to 400 mm 
+(8 to 16 in) for 
+overhead; 200 to 
+510 mm (8 to 20 in) 
+for other positions; 
+300 to 1,520 mm 
+(12 to 60 in) above 
+standing surface","19 to 32 mm 
+(0.75 to 1.125 in)","75 mm (3 in) 
+around rim","See 5.14 when 
+applicable","710 mm (28 in) 
+elbow 
+clearance, 
+100 to 150 mm 
+(4 to 6 in) 
+overhead valve 
+rim-to-rim 
+clearance"

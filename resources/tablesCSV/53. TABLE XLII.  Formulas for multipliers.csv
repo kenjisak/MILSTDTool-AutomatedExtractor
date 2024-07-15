@@ -1,0 +1,7 @@
+"Task Variable","Abbreviation","Metric (cm)","US Customary (in)"
+"Horizontal Multiplier","HM","25/H","10/H"
+"Vertical Multiplier","VM","1 - (0.003│V-75│)","1 - (0.0075│V-30│)"
+"Distance Multiplier","DM","0.82 + (4.5/D)","0.82 + (1.8/D)"
+"Asymmetry Multiplier","AM","1 - (0.0032A) 1/","1 - (0.0032A) 1/"
+"Frequency Multiplier","FM","From table XLV",""
+"Coupling Multiplier","CM","From table XLVI",""

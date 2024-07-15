@@ -1,0 +1,10 @@
+"Markings","3.5 cd/m2 (1 fL) or Below","Above 3.5 cd/m2 (1 fL)"
+"Critical markings with variable position 
+(e.g., numerals on counters)","5 mm (0.2 in)","3 mm (0.12 in)"
+"Critical markings with fixed position 
+(e.g., numerals on fixed scales, controls, 
+emergency instructions)","4 mm (0.16 in)","2.5 mm (0.1 in)"
+"Non-critical markings 
+(e.g., identification labels, routine instructions)","2.5 mm (0.1 in)","2.5 mm (0.1 in)"
+"NOTE:  The above values assume a 710 mm (28 in) viewing distance.  For other distances, multiply the 
+above values by D/710 mm (D/28 in).","",""

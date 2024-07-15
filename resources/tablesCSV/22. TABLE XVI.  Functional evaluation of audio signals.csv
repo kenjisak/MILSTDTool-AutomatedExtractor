@@ -1,0 +1,49 @@
+"Function","Type of Signal","",""
+"","Tones (Periodic)","Complex Sounds 
+(Non-Periodic)","Speech"
+"Quantitative 
+indication","Poor, maximum of 5 to 6 
+tones absolutely 
+recognizable.","Poor, interpolation between 
+signals inaccurate.","Good, minimum time and error in 
+obtaining exact value in terms 
+compatible with response."
+"Qualitative 
+indication","Poor-to-fair, difficult to 
+judge approximate value 
+and direction of deviation 
+from null setting unless 
+presented in close temporal 
+sequence.","Poor, difficult to judge 
+approximate deviation from 
+desired value.","Good, information concerning 
+displacement, direction, and rate 
+presented in form compatible with 
+required response."
+"Status 
+indication","Good, start and stop 
+timing.  Continuous 
+information where rate of 
+change of input is low.","Good, especially sounded for 
+irregularly occurring signals 
+(e.g., alarm signals).","Poor, inefficient; more easily 
+masked; problem of repeatability."
+"Tracking","Fair, null position easily 
+monitored; problem of 
+signal-response 
+compatibility.","Poor, required qualitative 
+indications difficult to 
+provide.","Good, meaning intrinsic in signal."
+"General","Good for automatic 
+communication of limited 
+information.  Meaning 
+must be learned.  Easily 
+generated.","Some sounds available with 
+common meaning (e.g., fire 
+bell).  Easily generated.","Most effective for rapid (but not 
+automatic) communication of 
+complex, multi-dimensional 
+information.  Meaning intrinsic in 
+signal and context when 
+standardized.  Minimum of new 
+learning required."

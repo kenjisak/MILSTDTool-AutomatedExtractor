@@ -1,0 +1,6 @@
+"Duration Category","Duration of Time (t)","Required Resting Period"
+"Short","t ≤ 1 hour","≥100% of duration of continuous lifting task"
+"Moderate","1 hour < t ≤ 2 hours","≥30% of continuous lifting task"
+"Long","2 hours < t ≤ 8 hours","No amount specified"
+"NOTE:  If sufficient rest is not provided, the next higher category is used in the calculation of the 
+frequency multiplier.","",""

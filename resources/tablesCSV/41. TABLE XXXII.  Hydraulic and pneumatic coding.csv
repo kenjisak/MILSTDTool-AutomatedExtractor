@@ -1,0 +1,11 @@
+"Function","Color","Definition of Function"
+"Intensified pressure","Purple/Violet","Pressure in excess of supply pressure induced by a booster or intensifier."
+"Supply pressure","Red","Pressure of the power-actuating fluid."
+"Charging pressure","Intermittent red","Pump-inlet pressure higher than atmospheric pressure."
+"Reduced pressure","Intermittent red","Auxiliary pressure lower than supply pressure."
+"Metered flow","Yellow","Fluid at a controlled flow rate (other than pump delivery)."
+"Exhaust","Blue","Return of the power-actuating fluid to reservoir."
+"Intake","Green","Sub-atmospheric pressure, usually on the intake side of the pump."
+"Drain","Green","Return of leakage of control-actuating fluid to reservoir."
+"Inactive","Blank","Fluid within the circuit but not serving a functional purpose during the 
+phase being represented."

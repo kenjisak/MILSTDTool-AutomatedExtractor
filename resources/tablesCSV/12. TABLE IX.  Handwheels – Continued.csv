@@ -1,0 +1,44 @@
+"Configuration Example","Application 
+Criteria","Design Criteria","","","",""
+"","","Dimensions","","","Displacement","Separation"
+"","","Diameter","Rim Diameter","Minimum Hand 
+Clearance","",""
+"","Vehicles steering 
+(automotive) 
+maximum resistance 
+power steering 
+ 
+Maximum 
+non-power = 220 N 
+(50 lb)","355 to 400 mm 
+(14 to 16 in) for power 
+steering 
+ 
+400 to 510 mm 
+(16 to 20 in) for 
+non-power steering","19 to 32 mm 
+(0.75 to 1.125 in)","30° (525 mrad) for 
+light vehicle 
+(preferred) 
+ 
+45° (785 mrad) for 
+heavy vehicle 
+(preferred)","Max ±120° 
+(2.1 radians) 
+when both 
+hands must 
+remain on 
+wheel","N/A"
+"","","D, grip diameter","L, grip length","X-Y, grip tilt","",""
+"","Aircraft steering 
+(combine with lever 
+for pitch, rudder 
+pedals for roll/steer)","32 mm (1.125 in) 
+preferred","100 mm (4 in) 
+minimum","X = 15° 
+(262 mrad) 
+Y = 0 to 15° 
+(0 to 262 mrad) 
+preferred","±30° 
+(525 mrad) 
+max preferred","N/A"

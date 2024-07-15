@@ -1,0 +1,20 @@
+"Vehicle State 
+Parameter","Air 
+(UAV/RPA)","Ground 
+(UGV)","Underwater 
+(UUV)","Surface 
+(USV)","Orbital 
+(UOV)"
+"Altitude","X","--","--","--","--"
+"Depth","--","--","X","--","--"
+"Distance","X","X","X","X","--"
+"Heading","X","X","X","X","--"
+"Inclination angle","--","--","X","--","--"
+"Pitch","X","X","X","X","--"
+"Position/location","X","X","X","X","X"
+"Roll","X","X","X","X","--"
+"Speed","X","X","X","X","--"
+"Yaw","X","X","X","X","--"
+"NOTE:  To the extent that they support the human operator’s role in managing the system, 
+these vehicle state parameters as well as any others required by the procuring activity shall 
+be displayed to the human operator according to accepted human factors methods.","","","","",""

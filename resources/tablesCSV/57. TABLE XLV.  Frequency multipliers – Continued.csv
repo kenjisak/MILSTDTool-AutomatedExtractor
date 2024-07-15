@@ -1,0 +1,8 @@
+"Coupling Type","Coupling Multiplier",""
+"","V < 75 cm (30 in)","V ≥ 75 cm (30 in)"
+"Good","1.00","1.00"
+"Fair","0.95","1.00"
+"Poor","0.90","0.90"
+"NOTE:  This table is sourced from the Applications Manual 
+for the Revised NIOSH Lifting Equation Applications 
+Manual.","",""

@@ -1,0 +1,33 @@
+"Alert Condition","Air 
+(UAV/RPA)","Ground 
+(UGV)","Underwater 
+(UUV)","Surface 
+(USV)","Orbital 
+(UOV)"
+"Loss of communication link","X","X","--","X","X"
+"Onboard fuel/power source approaches 
+critical level (e.g., requires return to base 
+or immediate landing)","X","X","X","X","X"
+"Vehicle has navigated all waypoints or 
+does not have positive command of where 
+to maneuver","X","X","X","X","--"
+"Vehicle is approaching its maximum 
+range","X","X","X","X","--"
+"Vehicle is on collision course or is 
+approaching the minimum distance from 
+objects 1/","X","X","X","X","X"
+"Vehicle approaches detection and lethal 
+ranges of a known and relevant hostile 
+defense system 1/","X","X","X","X","X"
+"Vehicle parameter is approaching 
+(a critical value) 2/","Airspeed 
+(stall speed) 
+Altitude 
+(max. and min.)","--","Depth 
+(max. and 
+min.)","--","--"
+"FOOTNOTES: 
+1/  As determined by the appropriate parameter; for example:  vehicle speed, closure rate, and communication range. 
+2/  The parameters shown in this row are examples only. 
+NOTE:  The information in this table should be considered the minimum set; the procuring activity may provide 
+additional alerting requirements.","","","","",""

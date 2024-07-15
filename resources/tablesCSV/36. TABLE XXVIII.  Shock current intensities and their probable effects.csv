@@ -1,0 +1,8 @@
+"Current (milliamperes [mA])","","Effects"
+"AC (60 Hz)","DC",""
+"0 to 1.0","0 to 4.0","Perception"
+"1.0 to 4.0","4.0 to 15","Surprise"
+"4.0 to 21","15 to 80","Reflex action"
+"21 to 40","80 to 160","Muscular inhibition"
+"41 to 100","160 to 300","Respiratory block"
+"Over 100","Over 300","Usually fatal"

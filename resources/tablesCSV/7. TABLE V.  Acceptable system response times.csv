@@ -1,0 +1,18 @@
+"System Interpretation","Response Time Definition","Time (Seconds)"
+"Key response, including 
+scroll wheels, optical 
+wheels, mouse clicks","Key pressed until positive response (e.g., “click”)","0.1"
+"Key print","Key pressed until appearance of character","0.2"
+"Page turn","End of request until first few lines are visible","1.0"
+"Page scan","End of request until text begins to scroll","0.5"
+"XY entry","From selection of field until visual verification","0.2"
+"Pointing","From input of point to display point","0.2"
+"Sketching","From input of point to display of line","0.2"
+"Local update","Change to image using local database (e.g., new menu list from 
+display buffer)","0.5"
+"Host update","Change where data is at host in readily accessible form (e.g., a scale 
+change of existing image)","2.0"
+"File update","Image update requires an access to a host file","10"
+"Inquiry (simple)","From command until display of a commonly used message","2.0"
+"Inquiry (complex)","Response message requires seldom used calculations in graphic form","10"
+"Error feedback","From entry of input until error message appears","0.2"

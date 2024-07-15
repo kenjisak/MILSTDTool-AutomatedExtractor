@@ -1,0 +1,12 @@
+"Communication Requirement","Score",""
+"","MRT","AI 1/"
+"Exceptionally high intelligibility","97%","0.7"
+"Normal acceptable intelligibility","91%","0.5"
+"Minimally acceptable intelligibility for mechanized equipment user(s)","80%","0.4"
+"Minimally acceptable intelligibility","75%","0.3"
+"NOTE: 
+1/ 
+The AI shall not be used to measure intelligibility of synthetic speech because some key 
+acoustic features are not present in non-human “speech”.  Instead, intelligibility of synthetic 
+speech shall be measured using representative panels of talkers and listeners.  See 
+MIL-STD-1474.","",""

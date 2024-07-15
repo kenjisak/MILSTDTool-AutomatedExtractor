@@ -1,0 +1,28 @@
+"Size/Type","Color","","","",""
+"","Red","Yellow","Green","White","Blue"
+"≥25 mm (1 in), 
+flashing 
+(3 to 5 Hz)","Emergency condition 
+(impending personnel 
+or equipment disaster)","--","--","--","--"
+"≥25 mm (1 in), 
+Steady","Master summation 
+(system or subsystem)","Extreme 
+caution 
+(impending 
+danger)","Master 
+summation 
+(system or 
+subsystem)","--","--"
+"≤13 mm (0.5 in), 
+steady","Malfunction; action 
+stopped; failure; stop 
+action","Delay; check; 
+recheck","Go ahead; in 
+tolerance; 
+acceptable; 
+ready","Functional or 
+physical 
+position; 
+action in 
+progress","Advisory"
