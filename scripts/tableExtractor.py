@@ -118,24 +118,24 @@ def upload_csv_file(csv_file_path):
 
 def extract_tables(tables_page_numbers):
 
-    for i in range(len(tables_page_numbers)):
-        corrected_page_number = tables_page_numbers[i] + page_offset
+    for curr_page_number in tables_page_numbers:
+        corrected_page_number = curr_page_number + page_offset
 
         if table_titles_matches(corrected_page_number + 1): # checks if the next page has a TABLE title and adds that page number into the sorted set, if it doesn't that means there isn't a TABLE continued. helps shorten time to process 
-            tables_page_numbers.add(tables_page_numbers[i] + 1)
+            tables_page_numbers.add(curr_page_number + 1)
 
         currTables = camelot.read_pdf(milstdpdf_file_path,pages = str(corrected_page_number))
 
-        for j in range(len(currTables)):
-            print("Page Number: " + str(tables_page_numbers[i]) + str(currTables[j].parsing_report))
+        for currTable in currTables:
+            print("Page Number: " + str(curr_page_number) + str(currTable.parsing_report))
 
-            currTable_title = corresponding_table_title_extraction(currTables[j])
+            currTable_title = corresponding_table_title_extraction(currTable)
             
             if currTable_title == None:
                 continue
             
             currTable_filepath = os.path.join(saved_tables_csv_filepath, f"{currTable_title}.csv")
-            currTables[j].to_csv(currTable_filepath)
+            currTable.to_csv(currTable_filepath)
             # upload_csv_file(currTable_filepath)
 
 def extract_page_numbers(start, end): # fixed missing page numbers for tables in between by using range of start and end tables number
@@ -190,8 +190,6 @@ def convert_to_sheet_name(filepath):
     return table_num_title
 
 def main():
-    # print(extract_pageNumbers_from_file(tabledata_file_path))  # fixed missing page numbers for tables
-
     extract_tables(extract_pageNumbers_from_file(tabledata_file_path)) # full document, * need to double checkfile names, doesn't always find the tables
     # extract_tables(SortedSet([428])) # specific pages to search for tables
     # upload_csv_file()
