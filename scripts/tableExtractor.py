@@ -116,7 +116,7 @@ def upload_csv_file(csv_file_path):
         usage_limit_retry(lambda: worksheet.resize(rows=num_rows, cols=num_cols)) # resize sheet to be exact
     print(f"Data written to sheet '{new_sheet_name}' successfully.")
 
-def extract_tables(tables_page_numbers):
+def extract_tables(tables_page_numbers: SortedSet):
 
     for curr_page_number in tables_page_numbers:
         corrected_page_number = curr_page_number + page_offset
@@ -190,8 +190,8 @@ def convert_to_sheet_name(filepath):
     return table_num_title
 
 def main():
-    extract_tables(extract_pageNumbers_from_file(tabledata_file_path)) # full document, * need to double checkfile names, doesn't always find the tables
-    # extract_tables(SortedSet([428])) # specific pages to search for tables
+    # extract_tables(extract_pageNumbers_from_file(tabledata_file_path)) # full document, * need to double checkfile names, doesn't always find the tables
+    extract_tables(SortedSet([419])) # specific pages to search for tables
     # upload_csv_file()
     return
 
