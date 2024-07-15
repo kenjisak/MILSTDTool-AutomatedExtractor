@@ -214,5 +214,3 @@ if __name__ == "__main__":
     main()
 
 # TODO add figure/image extraction plus table extraction for that same page to be paired with
-# TODO strip each text added with broken characters
-# TODO possibly add retry of pages until a table is found
