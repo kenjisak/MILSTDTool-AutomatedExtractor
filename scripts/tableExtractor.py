@@ -90,7 +90,7 @@ def upload_csv_file(csv_file_path):
         merge_range = f"A{worksheet.row_count}:{end_col_letter}{continued_title_index}" # row_count to use the index of the last row in the sheet for continuation
         usage_limit_retry(lambda: worksheet.merge_cells(merge_range))
         usage_limit_retry(lambda: worksheet.update([[file_num_rmv_csv_title]], f"A{continued_title_index}"))
-        format_cell_range(cleanDataFile.worksheet(existing_sheet_name), merge_range, CellFormat(horizontalAlignment='CENTER'))
+        usage_limit_retry(lambda: format_cell_range(cleanDataFile.worksheet(existing_sheet_name), merge_range, CellFormat(horizontalAlignment='CENTER')))
         # Write the data to the new Google Sheet
         for row in data:
             usage_limit_retry(lambda: worksheet.append_row(row))
@@ -107,7 +107,7 @@ def upload_csv_file(csv_file_path):
         merge_range = f"A1:{end_col_letter}1"
         usage_limit_retry(lambda: worksheet.merge_cells(merge_range))
         usage_limit_retry(lambda: worksheet.update([[file_num_rmv_csv_title]], f"A1"))
-        format_cell_range(cleanDataFile.worksheet(new_sheet_name), merge_range, CellFormat(horizontalAlignment='CENTER'))
+        usage_limit_retry(lambda: format_cell_range(cleanDataFile.worksheet(new_sheet_name), merge_range, CellFormat(horizontalAlignment='CENTER')))
 
         # Write the data to the new Google Sheet
         for row_index, row in enumerate(data, start=2):
@@ -189,10 +189,25 @@ def convert_to_sheet_name(filepath):
 
     return table_num_title
 
+def extract_leading_number(filename):
+    match = re.match(r'^(\d+)', filename)
+    if match:
+        return int(match.group(1))
+    return 0  # Default if no number is found
+
 def main():
     # extract_tables(extract_pageNumbers_from_file(tabledata_file_path)) # full document, * need to double checkfile names, doesn't always find the tables
-    extract_tables(SortedSet([419])) # specific pages to search for tables
-    # upload_csv_file()
+    # extract_tables(SortedSet([419])) # specific pages to search for tables
+
+    # Get all filenames in the directory
+    filenames = [filename for filename in os.listdir(saved_tables_csv_filepath) if os.path.isfile(os.path.join(saved_tables_csv_filepath, filename))]
+
+    # Sort filenames based on the leading number
+    sorted_filenames = sorted(filenames, key=extract_leading_number)
+
+    for filename in sorted_filenames:
+        filepath = os.path.join(saved_tables_csv_filepath, filename)
+        upload_csv_file(filepath) # Process the file in the correct order
     return
 
 if __name__ == "__main__":
