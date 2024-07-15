@@ -64,6 +64,11 @@ def upload_csv_file(csv_file_path):
     # TODO add center of table titles AND remove file numbers in the front
     # Extract the name of the CSV file without the extension
     full_sheet_name = os.path.splitext(os.path.basename(csv_file_path))[0]
+
+    file_num_rmv_csv_title = full_sheet_name.split(" ")
+    file_num_rmv_csv_title.pop(0)
+    file_num_rmv_csv_title = ' '.join(file_num_rmv_csv_title)
+
     new_sheet_name = convert_to_sheet_name(full_sheet_name).strip()
 
     # Read data from the CSV file
@@ -94,7 +99,7 @@ def upload_csv_file(csv_file_path):
         usage_limit_retry(lambda: worksheet.resize(rows=continued_title_index, cols=num_cols)) # resize sheet to be exact
         merge_range = f"A{worksheet.row_count}:{end_col_letter}{continued_title_index}" # row_count to use the index of the last row in the sheet for continuation
         usage_limit_retry(lambda: worksheet.merge_cells(merge_range))
-        usage_limit_retry(lambda: worksheet.update([[full_sheet_name]], f"A{continued_title_index}"))
+        usage_limit_retry(lambda: worksheet.update([[file_num_rmv_csv_title]], f"A{continued_title_index}"))
 
         # Write the data to the new Google Sheet
         for row in data:
@@ -111,7 +116,7 @@ def upload_csv_file(csv_file_path):
 
         merge_range = f"A1:{end_col_letter}1"
         usage_limit_retry(lambda: worksheet.merge_cells(merge_range))
-        usage_limit_retry(lambda: worksheet.update([[full_sheet_name]], f"A1"))
+        usage_limit_retry(lambda: worksheet.update([[file_num_rmv_csv_title]], f"A1"))
 
         # Write the data to the new Google Sheet
         for row_index, row in enumerate(data, start=2):
