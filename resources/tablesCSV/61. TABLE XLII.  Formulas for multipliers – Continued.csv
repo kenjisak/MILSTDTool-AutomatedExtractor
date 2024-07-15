@@ -1,5 +1,5 @@
-FOOTNOTE:,
-1/ The unit of measure for A is degrees.,
-NOTES:,
-1. This table is sourced from the Applications Manual for the Revised NIOSH Lifting Equation.,
-"2. The multipliers may not exceed 1.0. If the calculation yields a value of greater than 1.0, it is considered to be “ideal” and is set to 1.0. If the travel distance (D) is 10 cm, the equation yields 0.82+(4.5/10) = 1.27. Since this is greater than 1.0, the DM is set to 1.0, the max value.",
+FOOTNOTE:
+1/ The unit of measure for A is degrees.
+NOTES:
+1. This table is sourced from the Applications Manual for the Revised NIOSH Lifting Equation.
+"2. The multipliers may not exceed 1.0. If the calculation yields a value of greater than 1.0, it is considered to be ""ideal"" and is set to 1.0. If the travel distance (D) is 10 cm, the equation yields 0.82+(4.5/10) = 1.27. Since this is greater than 1.0, the DM is set to 1.0, the max value."
